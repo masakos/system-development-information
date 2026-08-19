@@ -10,38 +10,38 @@
 
 
 -- ------------------------------------------------------------
--- 【講師デモ】1. COUNT：件数を数える
+-- 1. COUNT：件数を数える
 -- ------------------------------------------------------------
 SELECT COUNT(*) FROM students;
 
--- 【講師デモ】2. SUM：合計を求める
+-- 2. SUM：合計を求める
 SELECT SUM(score) FROM scores WHERE subject_id = 2;  -- 数学の合計点
 
--- 【講師デモ】3. AVG：平均を求める
+-- 3. AVG：平均を求める
 SELECT AVG(score) FROM scores WHERE subject_id = 1;  -- 国語の平均点
 
--- 【講師デモ】4. MAX / MIN：最大値・最小値
+-- 4. MAX / MIN：最大値・最小値
 SELECT MAX(score), MIN(score) FROM scores WHERE subject_id = 3;  -- 英語
 
--- 【講師デモ】5. GROUP BY：グループごとに集計する
+-- 5. GROUP BY：グループごとに集計する
 --    「科目ごとの平均点」を一度に求める
 SELECT subject_id, AVG(score) AS avg_score
 FROM scores
 GROUP BY subject_id;
 
--- 【講師デモ】6. GROUP BY を複数列の集計と組み合わせる
+-- 6. GROUP BY を複数列の集計と組み合わせる
 SELECT student_id, MAX(score) AS best, MIN(score) AS worst
 FROM scores
 GROUP BY student_id;
 
--- 【講師デモ】7. HAVING：集計した"あと"の結果を絞り込む
+-- 7. HAVING：集計した"あと"の結果を絞り込む
 --    ※ WHERE は集計する"前"の行を絞り込む、HAVING は集計した"後"の結果を絞り込む、という違いに注意！
 SELECT subject_id, AVG(score) AS avg_score
 FROM scores
 GROUP BY subject_id
 HAVING AVG(score) >= 80;
 
--- 【講師デモ】8. WHERE と HAVING を同時に使う例
+-- 8. WHERE と HAVING を同時に使う例
 --    「7月10日以降の試験だけを対象に、学生ごとの平均点が70点未満の人」を探す
 SELECT student_id, AVG(score) AS avg_score
 FROM scores
@@ -81,4 +81,5 @@ HAVING AVG(score) < 70;
 -- Q8.【考察問題（SQLは書かなくてOK）】
 --     WHERE と HAVING はどちらも「絞り込み」をしますが、何が違うか
 --     自分の言葉で説明してみましょう。
+
 

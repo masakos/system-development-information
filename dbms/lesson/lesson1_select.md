@@ -18,7 +18,7 @@ SELECT student_name, birth_date FROM students;
 
 ### 3. WHERE句で条件を絞り込む
 ```sql
-SELECT * FROM students WHERE class_id = 1;
+SELECT * FROM students WHERE student_id = 261005;
 ```
 
 ### 4. 比較演算子（=, <>, >, <, >=, <=）
@@ -44,42 +44,32 @@ SELECT * FROM students ORDER BY birth_date DESC;
 
 ### 8. DISTINCT：重複を除いて表示する
 ```sql
-SELECT DISTINCT class_id FROM students;
+SELECT DISTINCT subject_id FROM scores;
 ```
 
 
 
-##【演習問題】自分でSQLを書いてみましょう
+## 【演習問題】自分でSQLを書いてみましょう
 
 
--- Q1. subjectsテーブルの全件・全列を表示しなさい。
+- Q1. subjectsテーブルの全件・全列を表示しなさい。
 
+- Q2. classesテーブルから department_name だけを表示しなさい。
 
--- Q2. classesテーブルから class_name だけを表示しなさい。
+- Q3. scoresテーブルから、subject_id が 1（プログラミング基礎）の行だけを表示しなさい。
 
+- Q4. scoresテーブルから、score が 80点以上の行を表示しなさい。
 
--- Q3. scoresテーブルから、subject_id が 1（国語）の行だけを表示しなさい。
+- Q5. scoresテーブルから、score が 60点から79点まで（BETWEENを使う）の行を表示しなさい。
 
+- Q6. studentsテーブルから、student_name が「杉」で始まる学生を検索しなさい。
 
--- Q4. scoresテーブルから、score が 80点以上の行を表示しなさい。
+- Q7. studentsテーブルの全件を、birth_date の昇順（古い→新しい）で並び替えて表示しなさい。
 
+- Q8. subjectsテーブルの teacher_id の種類を、重複を除いて表示しなさい。
 
--- Q5. scoresテーブルから、score が 60点から79点まで（BETWEENを使う）の行を表示しなさい。
+- Q9. birth_date が '2008-01-01' 以降の学生について、student_name と kana だけを表示しなさい。
 
-
--- Q6. studentsテーブルから、student_name が「山」で始まる学生を検索しなさい。
-
-
--- Q7. studentsテーブルの全件を、birth_date の昇順（古い→新しい）で並び替えて表示しなさい。
-
-
--- Q8. scoresテーブルの subject_id の種類を、重複を除いて表示しなさい。
-
-
--- Q9. class_id が 2 の学生について、student_name と kana だけを表示しなさい。
-
-
--- Q10.exam_date が '2026-07-10' で、かつ score が 70点以上の行を、
---      scoresテーブルから表示しなさい。（WHEREの中で AND を使う）
+- Q10.exam_date が '2026-07-13' で、かつ score が 70点以上の行を、 scoresテーブルから表示しなさい。（WHEREの中で AND を使う）
 
 
