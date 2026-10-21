@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>データベース 確認問題</title>
+<style>
+  @page { size: A4; margin: 10mm 11mm; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif;
+    font-size: 8.8pt;
+    line-height: 1.42;
+    color: #000;
+    background: #fff;
+  }
+  .page { width: 188mm; margin: 0 auto; }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1.5px solid #000;
+    padding-bottom: 1.5mm;
+    margin-bottom: 2.5mm;
+  }
+  h1 { font-size: 13pt; margin: 0; }
+  .name { font-size: 9pt; }
+  .name span { display: inline-block; border-bottom: 1px solid #000; width: 32mm; margin-left: 1mm; }
+  .cols { column-count: 2; column-gap: 6mm; column-rule: 0.5px solid #999; }
+  .q { break-inside: avoid; margin-bottom: 2.6mm; }
+  .q h2 { font-size: 9.5pt; margin: 0 0 0.5mm; }
+  .q p { margin: 0 0 0.8mm; }
+  ol.choices { list-style: none; margin: 0; padding-left: 1em; }
+  ol.choices li { padding-left: 1.6em; text-indent: -1.6em; }
+  table { border-collapse: collapse; font-size: 8pt; }
+  th, td { border: 0.6px solid #000; padding: 0.3mm 1.2mm; white-space: nowrap; }
+  th { background: #eee; font-weight: normal; white-space: normal; }
+  .q table.wide td { padding: 0.3mm 0.8mm; }
+  .caption { font-weight: bold; margin: 0.6mm 0 0.3mm; }
+  .num { text-align: right; }
+  u { text-underline-offset: 2px; }
+  .opt6 { margin-top: 1.2mm; }
+  .opt { display: flex; align-items: flex-start; gap: 2mm; padding: 1.2mm 0; border-top: 0.6px dashed #aaa; }
+  .opt:first-child { border-top: none; padding-top: 0; }
+  .opt > b { width: 1.4em; padding-top: 0.6mm; }
+  .rels { display: flex; flex-direction: column; align-items: flex-start; gap: 0.8mm; }
+  .rel { border: 0.8px solid #000; border-radius: 1mm; padding: 0.4mm 2mm; white-space: nowrap; }
+  @media screen {
+    body { background: #ddd; }
+    .page { background: #fff; padding: 10mm 11mm; width: 210mm; min-height: 297mm; margin: 5mm auto; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <h1>データベース 確認問題</h1>
+  <div class="name">学籍番号<span></span>　氏名<span></span></div>
+</header>
+
+<div class="cols">
+
+<section class="q">
+  <h2>問題1</h2>
+  <p>関係データベースのデータ構造の説明として、適切なものはどれか。</p>
+  <ol class="choices">
+    <li>ア．親レコードと子レコードをポインタで結合（けつごう）する。</li>
+    <li>イ．タグを用いてデータの構造と意味を表す。</li>
+    <li>ウ．データと手続（てつづき）を一体化（カプセル化）してもつ。</li>
+    <li>エ．データを2次元の表によって表現する。</li>
+  </ol>
+</section>
+
+<section class="q">
+  <h2>問題2</h2>
+  <p>関係データベースの主キー制約（せいやく）の条件として、キー値が重複（ちょうふく）していないことの他に、主キーを構成する列に必要な条件はどれか。</p>
+  <ol class="choices">
+    <li>ア．キー値が空でないこと</li>
+    <li>イ．構成する列が一つであること</li>
+    <li>ウ．表の先頭に定義されている列であること</li>
+    <li>エ．別の表の候補（こうほ）キーとキー値が一致していること</li>
+  </ol>
+</section>
+
+<section class="q">
+  <h2>問題3</h2>
+  <p>関係データベースにおいて、外部キーを定義する目的として、適切なものはどれか。</p>
+  <ol class="choices">
+    <li>ア．関係する相互のテーブルにおいて、レコード間の参照一貫性（いっかんせい）が維持（いじ）される制約（せいやく）をもたせる。</li>
+    <li>イ．関係する相互のテーブルの格納（かくのう）場所を近くに配置することによって、検索、更新を高速に行う。</li>
+    <li>ウ．障害（しょうがい）によって破壊（はかい）されたレコードを、テーブル間の相互の関係から可能な限り復旧（ふっきゅう）させる。</li>
+    <li>エ．レコードの削除、追加の繰返（くりかえ）しによる、レコード格納（かくのう）エリアのフラグメンテーションを防止する。</li>
+  </ol>
+</section>
+
+<section class="q">
+  <h2>問題4</h2>
+  <p>E-R図に関する記述のうち、適切なものはどれか。</p>
+  <ol class="choices">
+    <li>ア．関係データベースの表として実装（じっそう）することを前提に表現する。</li>
+    <li>イ．管理の対象をエンティティ及（およ）びエンティティ間のリレーションシップとして表現する。</li>
+    <li>ウ．データの生成から消滅（しょうめつ）に至（いた）るデータ操作を表現する。</li>
+    <li>エ．リレーションシップは、業務上の手順を表現する。</li>
+  </ol>
+</section>
+
+<section class="q">
+  <h2>問題5</h2>
+  <p>6行だけからなる“配送”表において成立している関数従属（じゅうぞく）はどれか。ここで、X→Y は、XはYを関数的に決定することを表す。</p>
+  <div class="caption">配送</div>
+  <table class="wide">
+    <tr><th>配送日</th><th>部署<br>（ぶしょ）ID</th><th>部署名</th><th>配送先</th><th>部品ID</th><th>数量</th></tr>
+    <tr><td>2016-08-21</td><td>300</td><td>第二生産部</td><td>秋田事業所</td><td>1342</td><td class="num">300</td></tr>
+    <tr><td>2016-08-21</td><td>300</td><td>第二生産部</td><td>秋田事業所</td><td>1342</td><td class="num">300</td></tr>
+    <tr><td>2016-08-25</td><td>400</td><td>第一生産部</td><td>名古屋工場</td><td>2346</td><td class="num">300</td></tr>
+    <tr><td>2016-08-25</td><td>400</td><td>第一生産部</td><td>名古屋工場</td><td>2346</td><td class="num">1,000</td></tr>
+    <tr><td>2016-08-30</td><td>500</td><td>研究開発部</td><td>名古屋工場</td><td>2346</td><td class="num">30</td></tr>
+    <tr><td>2016-08-30</td><td>500</td><td>研究開発部</td><td>川崎事業所</td><td>1342</td><td class="num">30</td></tr>
+  </table>
+  <ol class="choices" style="margin-top:0.8mm">
+    <li>ア．配送先 → 部品ID　　　イ．配送日 → 部品ID</li>
+    <li>ウ．部署ID → 部品ID　　　エ．部署名 → 配送先</li>
+  </ol>
+</section>
+
+<section class="q">
+  <h2>問題6</h2>
+  <p>“従業員”表を第3正規形（せいきけい）にしたものはどれか。ここで、下線部（かせんぶ）は主キーを表す。</p>
+  <p>従業員（<u>従業員番号</u>，従業員氏名，{<u>技能（ぎのう）コード</u>，技能名，技能経験年数}）<br>（{ } は繰返（くりかえ）しを表す）</p>
+  <div class="opt6">
+    <div class="opt"><b>ア</b><div class="rels">
+      <div class="rel"><u>従業員番号</u>，従業員氏名</div>
+      <div class="rel"><u>技能コード</u>，技能名，技能経験年数</div>
+    </div></div>
+    <div class="opt"><b>イ</b><div class="rels">
+      <div class="rel"><u>従業員番号</u>，<u>技能コード</u>，技能経験年数</div>
+      <div class="rel"><u>技能コード</u>，技能名</div>
+    </div></div>
+    <div class="opt"><b>ウ</b><div class="rels">
+      <div class="rel"><u>従業員番号</u>，<u>技能コード</u>，技能経験年数</div>
+      <div class="rel"><u>従業員番号</u>，従業員氏名</div>
+      <div class="rel"><u>技能コード</u>，技能名</div>
+    </div></div>
+    <div class="opt"><b>エ</b><div class="rels">
+      <div class="rel"><u>従業員番号</u>，<u>技能コード</u></div>
+      <div class="rel"><u>従業員番号</u>，従業員氏名，技能経験年数</div>
+      <div class="rel"><u>技能コード</u>，技能名</div>
+    </div></div>
+  </div>
+</section>
+
+<section class="q">
+  <h2>問題7</h2>
+  <p>関係データベースの操作のうち、射影（しゃえい）（projection）の説明として、適切なものはどれか。</p>
+  <ol class="choices">
+    <li>ア．ある表の照会（しょうかい）結果と、別の表の照会結果を合わせて一つの表にする。</li>
+    <li>イ．表の中から特定の条件に合致（がっち）した行を取り出す。</li>
+    <li>ウ．表の中から特定の列だけを取り出す。</li>
+    <li>エ．二つ以上の表の組（くみ）から条件に合致した組同士を合わせて新しい表を作り出す。</li>
+  </ol>
+</section>
+
+</div>
+</div>
+</body>
+</html>
