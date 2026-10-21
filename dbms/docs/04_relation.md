@@ -1,8 +1,10 @@
 ## ER図のリレーション
 
 ### 0.リレーションを描く
-- **ヒント：同じ名前の列が、別のテーブルにも出てくるところを探そう**
-- 線を引いたら、線の両端に多重度（`1`、`0..*` など）を書いてみよう
+1. 外部キーに FK と書こう
+2. テーブル同士を線で結ぼう
+   - 外部キーを持つテーブルと、参照先のテーブルを線で結ぼう。
+3. 線の両端に多重度（`1`、`0..*` など）を書こう
 
 ### 1. CREATE文を確認する
 
@@ -66,8 +68,13 @@ teachers 1 ──────── 0..* classes
 ```
 
 ```sql
-SELECT t.teacher_id, t.teacher_name, c.department_name 
-from teachers as t left join classes as c on t.teacher_id = c.teacher_id
+SELECT 
+  t.teacher_id, 
+  t.teacher_name, 
+  c.department_name 
+FROM teachers as t 
+left join classes as c 
+on t.teacher_id = c.teacher_id
 ```
 
 | teacher_id | teacher_name | 担任するクラス |
@@ -105,11 +112,11 @@ ORDER BY 担当科目数 DESC;
 
 | teacher_name | 担当科目数 |
 | --- | --- |
-森隆	2
-佐藤美穂	1
-鈴木健一	1
-岡田恵	1
-高橋直子	0
+森隆	| 2
+佐藤美穂	| 1
+鈴木健一	| 1
+岡田恵	| 1
+高橋直子	| 0
 ;
 
 - 森先生は2科目を担当 → **1対多** の「多」の例
