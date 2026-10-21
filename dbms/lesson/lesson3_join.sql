@@ -90,7 +90,7 @@ ORDER BY avg_score DESC;
 -- ============================================================
 
 -- ------------------------------------------------------------
--- 7. INNER JOIN と LEFT JOIN を比べる（ここが一番大事！）
+-- 7. INNER JOIN と LEFT JOIN を比べる
 --    教員と、その先生が担任をしているクラスを表示する
 -- ------------------------------------------------------------
 
@@ -146,6 +146,7 @@ LEFT JOIN scores AS sc
       AND sc.subject_id = 5
 ORDER BY s.student_id;
 -- → 20件。坂本優花さん（261010）だけ score が NULL（未受験）
+-- 条件に合う成績だけを結合する。成績が見つからない学生も残る。
 
 
 -- ============================================================
@@ -169,21 +170,12 @@ FROM teachers AS t
 LEFT JOIN classes AS c ON c.teacher_id = t.teacher_id;
 
 
--- ------------------------------------------------------------
--- 12. RIGHT JOIN で、科目を担当していない先生も含めて表示する
--- ------------------------------------------------------------
-SELECT t.teacher_name, sb.subject_name
-FROM subjects AS sb
-RIGHT JOIN teachers AS t ON sb.teacher_id = t.teacher_id
-ORDER BY t.teacher_id;
--- → 10件。高橋さん・田中さん・伊藤さん・渡辺さん・山本さんは subject_name が NULL
---   森さんは2科目担当なので2行になる
 
 
-## 【演習問題】自分でSQLを書いてみましょう
+-- 【演習問題】自分でSQLを書いてみましょう
 
-- Q1.（INNER JOIN）
+-- Q1.（INNER JOIN）
   classes と teachers を結合して、**学科名** と **担任の先生の名前** を表示しなさい。
 
-- Q2.（LEFT JOIN ＋ IS NULL）
+-- Q2.（LEFT JOIN ＋ IS NULL）
   学生が1人も所属していないクラスの **学科名** を表示しなさい。

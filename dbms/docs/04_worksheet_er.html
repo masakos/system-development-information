@@ -1,211 +1,521 @@
 <!doctype html>
 <html lang="ja">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ER図ワークシート</title>
-<style>
-  @page { size: A4 landscape; margin: 0; }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: #e5e5e5;
-    color: #111;
-    font-family: "Yu Gothic", "YuGothic", "Meiryo", "Hiragino Sans", sans-serif;
-  }
-  .sheet {
-    width: 297mm;
-    height: 210mm;
-    margin: 10mm auto;
-    padding: 10mm 12mm;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,.2);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .head {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    border-bottom: 0.6mm solid #111;
-    padding-bottom: 2mm;
-  }
-  .head h1 { margin: 0; font-size: 17pt; }
-  .head .sub { font-size: 10pt; margin-left: 4mm; color: #444; }
-  .name { font-size: 10.5pt; display: flex; gap: 6mm; }
-  .name span { display: inline-block; border-bottom: 0.3mm solid #111; min-width: 22mm; }
-  .name span.wide { min-width: 48mm; }
-  .lead { font-size: 10pt; margin: 2.5mm 0 0; }
-  svg.diagram { display: block; margin: 2mm auto 0; }
-  .p1 svg.diagram { height: 122mm; }
-  .p2 svg.diagram { height: 112mm; }
-  .bottom { display: flex; gap: 6mm; margin-top: auto; font-size: 9.5pt; }
-  .questions { flex: 1; }
-  .questions ol { margin: 0; padding-left: 5mm; }
-  .questions li { margin-bottom: 1.6mm; }
-  .questions .ans { display: inline-block; border-bottom: 0.3mm solid #111; min-width: 60mm; }
-  .legend { width: 104mm; border: 0.3mm solid #111; padding: 2mm 3mm; }
-  .legend h2, .questions h2 { font-size: 10pt; margin: 0 0 1.5mm; }
-  .legend table { border-collapse: collapse; width: 100%; }
-  .legend td { padding: 0.6mm 1mm; vertical-align: middle; white-space: nowrap; }
-  .legend .mult { font-family: Consolas, "Courier New", monospace; font-weight: bold; font-size: 11pt; width: 13mm; }
-  .legend .example { margin: 1.5mm 0 0; font-size: 9pt; }
-  table.ans-table { border-collapse: collapse; width: 100%; font-size: 9.5pt; }
-  table.ans-table th, table.ans-table td { border: 0.3mm solid #111; padding: 1mm 2mm; text-align: left; }
-  table.ans-table th { background: #eee; }
-  code { font-family: Consolas, "Courier New", monospace; }
-  .teacher { font-size: 9.5pt; padding: 0.6mm 2.5mm; border: 0.3mm solid #111; border-radius: 1mm; }
-  .points { font-size: 9pt; margin: 1.5mm 0 0; padding-left: 5mm; }
-  .points li { margin-bottom: 0.6mm; }
-  @media print {
-    body { background: #fff; }
-    .sheet { margin: 0; box-shadow: none; break-after: page; }
-    .sheet:last-child { break-after: auto; }
-  }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ER図ワークシート</title>
+  <style>
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #e5e5e5;
+      color: #111;
+      font-family: "Yu Gothic", "YuGothic", "Meiryo", "Hiragino Sans", sans-serif;
+    }
+
+    .sheet {
+      width: 297mm;
+      height: 210mm;
+      margin: 10mm auto;
+      padding: 10mm 12mm;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 0.6mm solid #111;
+      padding-bottom: 2mm;
+    }
+
+    .head h1 {
+      margin: 0;
+      font-size: 17pt;
+    }
+
+    .head .sub {
+      font-size: 10pt;
+      margin-left: 4mm;
+      color: #444;
+    }
+
+    .name {
+      font-size: 10.5pt;
+      display: flex;
+      gap: 6mm;
+    }
+
+    .name span {
+      display: inline-block;
+      border-bottom: 0.3mm solid #111;
+      min-width: 22mm;
+    }
+
+    .name span.wide {
+      min-width: 48mm;
+    }
+
+    .lead {
+      font-size: 10pt;
+      margin: 2.5mm 0 0;
+    }
+
+    svg.diagram {
+      display: block;
+      margin: 2mm auto 0;
+    }
+
+    .p1 svg.diagram {
+      height: 122mm;
+    }
+
+    .p2 svg.diagram {
+      height: 112mm;
+    }
+
+    .p3 svg.diagram {
+      height: 94mm;
+    }
+
+    .p3 .bottom {
+      gap: 5mm;
+    }
+
+    .p3 .points {
+      font-size: 9pt;
+      margin: 0;
+    }
+
+    pre.sql {
+      margin: 0;
+      width: 118mm;
+      padding: 2mm 3mm;
+      border: 0.3mm solid #111;
+      font-size: 7.6pt;
+      line-height: 1.35;
+      font-family: Consolas, "Courier New", monospace;
+      white-space: pre;
+    }
+
+    pre.sql .del {
+      color: #888;
+      text-decoration: line-through;
+    }
+
+    pre.sql b {
+      background: #fff1b8;
+    }
+
+    .bottom {
+      display: flex;
+      gap: 6mm;
+      margin-top: auto;
+      font-size: 9.5pt;
+    }
+
+    .questions {
+      flex: 1;
+    }
+
+    .questions ol {
+      margin: 0;
+      padding-left: 5mm;
+    }
+
+    .questions li {
+      margin-bottom: 1.6mm;
+    }
+
+    .questions .ans {
+      display: inline-block;
+      border-bottom: 0.3mm solid #111;
+      min-width: 60mm;
+    }
+
+    .legend {
+      width: 104mm;
+      border: 0.3mm solid #111;
+      padding: 2mm 3mm;
+    }
+
+    .legend h2,
+    .questions h2 {
+      font-size: 10pt;
+      margin: 0 0 1.5mm;
+    }
+
+    .legend table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    .legend td {
+      padding: 0.6mm 1mm;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .legend .mult {
+      font-family: Consolas, "Courier New", monospace;
+      font-weight: bold;
+      font-size: 11pt;
+      width: 13mm;
+    }
+
+    .legend .example {
+      margin: 1.5mm 0 0;
+      font-size: 9pt;
+    }
+
+    table.ans-table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 9.5pt;
+    }
+
+    table.ans-table th,
+    table.ans-table td {
+      border: 0.3mm solid #111;
+      padding: 1mm 2mm;
+      text-align: left;
+    }
+
+    table.ans-table th {
+      background: #eee;
+    }
+
+    code {
+      font-family: Consolas, "Courier New", monospace;
+    }
+
+    .teacher {
+      font-size: 9.5pt;
+      padding: 0.6mm 2.5mm;
+      border: 0.3mm solid #111;
+      border-radius: 1mm;
+    }
+
+    .points {
+      font-size: 9pt;
+      margin: 1.5mm 0 0;
+      padding-left: 5mm;
+    }
+
+    .points li {
+      margin-bottom: 0.6mm;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .sheet {
+        margin: 0;
+        box-shadow: none;
+        break-after: page;
+      }
+
+      .sheet:last-child {
+        break-after: auto;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ============ 1ページ目：学生用ワークシート ============ -->
-<section class="sheet p1">
-  <div class="head">
-    <div><h1>ER図ワークシート<span class="sub">学生管理システム</span></h1></div>
-    <div class="name">学籍番号 <span></span> 氏名 <span class="wide"></span></div>
-  </div>
-  <p class="lead">5つのテーブル（エンティティ）と属性が書いてあります。テーブル同士のつながり（リレーション）を線で結び、線の両端に多重度を書きましょう。<b>PK</b> は主キー。</p>
-
-  <svg class="diagram" id="sheet" viewBox="0 0 272 132" xmlns="http://www.w3.org/2000/svg"></svg>
-
-  <div class="bottom">
-    <div class="questions">
-      <h2>問い</h2>
-      <ol>
-        <li>同じ名前の列が別のテーブルにも出てくるところに、線を引こう。線は何本？　<span class="ans" style="min-width:20mm"></span> 本</li>
-        <li>線の両端に、右の多重度（<b>1</b>、<b>0..*</b> など）を書こう。「1」の側と「多」の側は、どうやって見分けた？<br><span class="ans" style="min-width:150mm"></span></li>
-        <li>students と subjects は、どんな関係？　直接つながっていないのはなぜ？<br><span class="ans" style="min-width:150mm"></span></li>
-      </ol>
+  <!-- ============ 1ページ目：学生用ワークシート ============ -->
+  <section class="sheet p1">
+    <div class="head">
+      <div>
+        <h1>ER図ワークシート<span class="sub">学生管理システム</span></h1>
+      </div>
+      <div class="name">学籍番号 <span></span> 氏名 <span class="wide"></span></div>
     </div>
-    <div class="legend">
-      <h2>線の端に書く多重度</h2>
-      <table>
-        <tr><td class="mult">1</td><td>ちょうど1件</td><td class="mult">0..1</td><td>0件か1件</td></tr>
-        <tr><td class="mult">1..*</td><td>1件以上</td><td class="mult">0..*</td><td>0件以上（* でも可）</td></tr>
-      </table>
-      <p class="example">例：<b>A</b>　1 ────── 0..*　<b>B</b><br>A 1件に、B が0件以上つながる。<br>B 1件から見ると、A はちょうど1件。</p>
+    <p class="lead">5つのテーブル（エンティティ）と属性が書いてあります。テーブル同士のつながり（リレーション）を線で結び、線の両端に多重度を書きましょう。<b>PK</b> は主キー。</p>
+
+    <svg class="diagram" id="sheet" viewBox="0 0 272 132" xmlns="http://www.w3.org/2000/svg"></svg>
+
+    <div class="bottom">
+      <div class="questions">
+        <h2>問い</h2>
+        <ol>
+          <li>同じ名前の列が別のテーブルにも出てくるところに、線を引こう。線は何本？　<span class="ans" style="min-width:20mm"></span> 本</li>
+          <li>線の両端に、右の多重度（<b>1</b>、<b>0..*</b> など）を書こう。「1」の側と「多」の側は、どうやって見分けた？<br><span class="ans"
+              style="min-width:150mm"></span></li>
+          <li>students と subjects は、どんな関係？　直接つながっていないのはなぜ？<br><span class="ans" style="min-width:150mm"></span></li>
+        </ol>
+      </div>
+      <div class="legend">
+        <h2>線の端に書く多重度</h2>
+        <table>
+          <tr>
+            <td class="mult">1</td>
+            <td>ちょうど1件</td>
+            <td class="mult">0..1</td>
+            <td>0件か1件</td>
+          </tr>
+          <tr>
+            <td class="mult">1..*</td>
+            <td>1件以上</td>
+            <td class="mult">0..*</td>
+            <td>0件以上（* でも可）</td>
+          </tr>
+        </table>
+        <p class="example">例：<b>A</b>　1 ────── 0..*　<b>B</b><br>A 1件に、B が0件以上つながる。<br>B 1件から見ると、A はちょうど1件。</p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ============ 2ページ目：解答（教員用） ============ -->
-<section class="sheet p2">
-  <div class="head">
-    <div><h1>ER図ワークシート　解答<span class="sub">学生管理システム</span></h1></div>
-    <div class="teacher">教員用</div>
-  </div>
+  <!-- ============ 2ページ目：解答 ============ -->
+  <section class="sheet p2">
+    <div class="head">
+      <div>
+        <h1>ER図ワークシート　解答<span class="sub">学生管理システム</span></h1>
+      </div>
+      <div class="teacher">解答</div>
+    </div>
 
-  <svg class="diagram" id="answer" viewBox="0 0 272 132" xmlns="http://www.w3.org/2000/svg"></svg>
+    <svg class="diagram" id="answer" viewBox="0 0 272 132" xmlns="http://www.w3.org/2000/svg"></svg>
 
-  <table class="ans-table">
-    <tr><th>線</th><th>外部キー（CREATE文）</th><th>「1」側</th><th>「多」側</th><th>「0以上」になる理由（実データ）</th></tr>
-    <tr><td>teachers ─ classes</td><td><code>classes.teacher_id</code> NOT NULL</td><td>担任はちょうど1人</td><td>0クラス以上</td><td>森先生・岡田先生は担任を持たない</td></tr>
-    <tr><td>teachers ─ subjects</td><td><code>subjects.teacher_id</code> NOT NULL</td><td>担当はちょうど1人</td><td>0科目以上</td><td>高橋先生〜山本先生は科目を持たない（森先生は2科目）</td></tr>
-    <tr><td>classes ─ students</td><td><code>students.class_id</code> NOT NULL</td><td>所属はちょうど1クラス</td><td>0人以上</td><td>ITエンジニア学科以外は学生がいない</td></tr>
-    <tr><td>students ─ scores</td><td><code>scores.student_id</code> NOT NULL</td><td>ちょうど1人</td><td>0件以上</td><td>坂本さんはビジネスマナー未受験</td></tr>
-    <tr><td>subjects ─ scores</td><td><code>scores.subject_id</code> NOT NULL</td><td>ちょうど1科目</td><td>0件以上</td><td>新しく開講した科目は成績がまだない</td></tr>
-  </table>
-  <ul class="points">
-    <li>問い1：<b>5本</b>（外部キーの数＝線の数）。問い2：外部キーを持っている側が「多」、参照される側が「1」。NOT NULL なので「1」側は <b>1</b>（0..1 ではない）。</li>
-    <li>問い3：多対多（1人が複数の科目を受け、1科目を複数人が受ける）。多対多は直接つなげないので、中間テーブル <code>scores</code> で「1対多」2本に分ける。</li>
-  </ul>
-</section>
+    <table class="ans-table">
+      <tr>
+        <th>線</th>
+        <th>外部キー（CREATE文）</th>
+        <th>「1」側</th>
+        <th>「多」側</th>
+        <th>「0以上」になる理由（実データ）</th>
+      </tr>
+      <tr>
+        <td>teachers ─ classes</td>
+        <td><code>classes.teacher_id</code> NOT NULL</td>
+        <td>担任はちょうど1人</td>
+        <td>0クラス以上</td>
+        <td>森先生・岡田先生は担任を持たない</td>
+      </tr>
+      <tr>
+        <td>teachers ─ subjects</td>
+        <td><code>subjects.teacher_id</code> NOT NULL</td>
+        <td>担当はちょうど1人</td>
+        <td>0科目以上</td>
+        <td>高橋先生〜山本先生は科目を持たない（森先生は2科目）</td>
+      </tr>
+      <tr>
+        <td>classes ─ students</td>
+        <td><code>students.class_id</code> NOT NULL</td>
+        <td>所属はちょうど1クラス</td>
+        <td>0人以上</td>
+        <td>ITエンジニア学科以外は学生がいない</td>
+      </tr>
+      <tr>
+        <td>students ─ scores</td>
+        <td><code>scores.student_id</code> NOT NULL</td>
+        <td>ちょうど1人</td>
+        <td>0件以上</td>
+        <td>坂本さんはビジネスマナー未受験</td>
+      </tr>
+      <tr>
+        <td>subjects ─ scores</td>
+        <td><code>scores.subject_id</code> NOT NULL</td>
+        <td>ちょうど1科目</td>
+        <td>0件以上</td>
+        <td>新しく開講した科目は成績がまだない</td>
+      </tr>
+    </table>
+    <ul class="points">
+      <li>問い1：<b>5本</b>（外部キーの数＝線の数）。問い2：外部キーを持っている側が「多」、参照される側が「1」。NOT NULL なので「1」側は <b>1</b>（0..1 ではない）。</li>
+      <li>問い3：多対多（1人が複数の科目を受け、1科目を複数人が受ける）。多対多は直接つなげないので、中間テーブル <code>scores</code> で「1対多」2本に分ける。</li>
+    </ul>
+  </section>
 
-<script>
-  // 図の部品はすべて mm 単位（viewBox 272 × 132）
-  const W = 62, HEAD = 9, ROW = 7;
-  const entities = {
-    classes:  { x: 10,  y: 8,  ja: "クラス", attrs: [
-      ["PK", "class_id", "クラスID"], ["", "enrollment_year", "入学年度"],
-      ["", "department_name", "学科名"], ["FK", "teacher_id", "担任"]]},
-    teachers: { x: 105, y: 8,  ja: "教員", attrs: [
-      ["PK", "teacher_id", "教員ID"], ["", "teacher_name", "氏名"],
-      ["", "kana", "ふりがな"], ["", "hire_date", "採用日"]]},
-    subjects: { x: 200, y: 8,  ja: "科目", attrs: [
-      ["PK", "subject_id", "科目ID"], ["", "subject_name", "科目名"],
-      ["", "credit", "単位数"], ["FK", "teacher_id", "担当教員"]]},
-    students: { x: 10,  y: 82, ja: "学生", attrs: [
-      ["PK", "student_id", "学籍番号"], ["", "student_name", "氏名"],
-      ["", "kana", "ふりがな"], ["", "birth_date", "生年月日"], ["FK", "class_id", "所属クラス"]]},
-    scores:   { x: 200, y: 82, ja: "成績", attrs: [
-      ["PK", "score_id", "成績ID"], ["FK", "student_id", "学生"],
-      ["FK", "subject_id", "科目"], ["", "score", "点数"], ["", "exam_date", "試験日"]]},
-  };
+  <!-- ============ 3ページ目：発展（teachers と subjects が多対多のとき） ============ -->
+  <section class="sheet p3">
+    <div class="head">
+      <div>
+        <h1>発展：teachers と subjects が多対多のとき<span class="sub">学生管理システム</span></h1>
+      </div>
+      <div class="teacher">発展</div>
+    </div>
+    <p class="lead">「1つの科目を複数の教員で担当する（例：データベースを森先生と岡田先生の2人で担当）」ことも認めると、teachers と subjects
+      は<b>多対多</b>になります。多対多は直接線で結べないので、<b>中間テーブル</b> <code>teacher_subjects</code> をはさみます（色付きが変更箇所）。</p>
 
-  // [1側, 多側, 1側の端点, 多側の端点, ラベル]
-  const relations = [
-    ["teachers", "classes",  [105, 26], [72, 26],   "担任する"],
-    ["teachers", "subjects", [167, 26], [200, 26],  "担当する"],
-    ["classes",  "students", [41, 45],  [41, 82],   "所属する"],
-    ["subjects", "scores",   [231, 45], [231, 82],  "受験される"],
-    ["students", "scores",   [72, 104], [200, 104], "受験する"],
-  ];
+    <svg class="diagram" id="mn" viewBox="0 0 272 152" xmlns="http://www.w3.org/2000/svg"></svg>
 
-  const NS = "http://www.w3.org/2000/svg";
-  function el(parent, tag, attrs, text) {
-    const e = document.createElementNS(NS, tag);
-    for (const k in attrs) e.setAttribute(k, attrs[k]);
-    if (text !== undefined) e.textContent = text;
-    parent.appendChild(e);
-    return e;
-  }
+    <div class="bottom">
+      <div class="questions">
+        <h2>ポイント</h2>
+        <ul class="points">
+          <li><code>subjects.teacher_id</code> は1列なので、1科目に教員を<b>1人しか</b>書けない。2人目を入れる列を増やす（teacher_id2…）のは第1正規形違反。</li>
+          <li>そこで <code>subjects</code> から <code>teacher_id</code> を削除し、「どの教員がどの科目を担当するか」の組を1行ずつ
+            <code>teacher_subjects</code> に記録する。<br>例：(森, データベース)、(岡田, データベース)、(森, ネットワーク基礎) … の3行。</li>
+          <li>多対多1本 → 「1対多」2本に分解。線は <b>5本 → 6本</b>。scores（学生×科目）と同じ形。</li>
+          <li><code>UNIQUE (teacher_id, subject_id)</code> で同じ組の二重登録を防ぐ。</li>
+          <li>注意：元の設計では <code>NOT NULL</code> で「科目には必ず担当が1人いる」を保証できたが、中間テーブルでは担当0人の科目も登録できてしまう（subjects 側は 1..*
+            にしたくても、外部キーだけでは強制できず 0..* になる）。</li>
+        </ul>
+      </div>
+      <pre class="sql">CREATE TABLE subjects (
+    subject_id   INTEGER PRIMARY KEY,
+    subject_name TEXT NOT NULL UNIQUE,
+    credit       INTEGER NOT NULL CHECK (credit &gt; 0)<span class="del">,
+    teacher_id   INTEGER NOT NULL, ...</span>   -- 削除
+);
 
-  function drawEntities(svg, showFK) {
-    for (const [name, en] of Object.entries(entities)) {
-      const h = HEAD + ROW * en.attrs.length;
-      el(svg, "rect", { x: en.x, y: en.y, width: W, height: h, fill: "#fff", stroke: "#111", "stroke-width": 0.5 });
-      el(svg, "rect", { x: en.x, y: en.y, width: W, height: HEAD, fill: "#e8e8e8", stroke: "#111", "stroke-width": 0.5 });
-      el(svg, "text", { x: en.x + 3, y: en.y + 6.3, "font-size": 4.6, "font-weight": "bold" }, name);
-      el(svg, "text", { x: en.x + W - 3, y: en.y + 6.3, "font-size": 3.4, "text-anchor": "end", fill: "#444" }, en.ja);
-      en.attrs.forEach(([key, col, ja], i) => {
-        const y = en.y + HEAD + ROW * i;
-        if (i > 0) el(svg, "line", { x1: en.x, y1: y, x2: en.x + W, y2: y, stroke: "#bbb", "stroke-width": 0.25 });
-        const mark = key === "PK" || (key === "FK" && showFK) ? key : "";
-        el(svg, "text", { x: en.x + 2.5, y: y + 4.9, "font-size": 3.2, "font-weight": "bold" }, mark);
-        el(svg, "text", { x: en.x + 10, y: y + 4.9, "font-size": 3.8, "font-family": "Consolas, monospace",
-                          "text-decoration": key === "PK" ? "underline" : "none" }, col);
-        el(svg, "text", { x: en.x + W - 2.5, y: y + 4.9, "font-size": 3.1, "text-anchor": "end", fill: "#555" }, ja);
-      });
+<b>CREATE TABLE teacher_subjects (</b>         -- 追加
+<b>    assignment_id INTEGER PRIMARY KEY,</b>
+<b>    teacher_id    INTEGER NOT NULL,</b>
+<b>    subject_id    INTEGER NOT NULL,</b>
+<b>    FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id),</b>
+<b>    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),</b>
+<b>    UNIQUE (teacher_id, subject_id)</b>
+<b>);</b></pre>
+    </div>
+  </section>
+
+  <script>
+    // 図の部品はすべて mm 単位（viewBox 272 × 132）
+    const W = 62, HEAD = 9, ROW = 7;
+    const entities = {
+      classes: {
+        x: 10, y: 8, ja: "クラス", attrs: [
+          ["PK", "class_id", "クラスID"], ["", "enrollment_year", "入学年度"],
+          ["", "department_name", "学科名"], ["FK", "teacher_id", "担任"]]
+      },
+      teachers: {
+        x: 105, y: 8, ja: "教員", attrs: [
+          ["PK", "teacher_id", "教員ID"], ["", "teacher_name", "氏名"],
+          ["", "kana", "ふりがな"], ["", "hire_date", "採用日"]]
+      },
+      subjects: {
+        x: 200, y: 8, ja: "科目", attrs: [
+          ["PK", "subject_id", "科目ID"], ["", "subject_name", "科目名"],
+          ["", "credit", "単位数"], ["FK", "teacher_id", "担当教員"]]
+      },
+      students: {
+        x: 10, y: 82, ja: "学生", attrs: [
+          ["PK", "student_id", "学籍番号"], ["", "student_name", "氏名"],
+          ["", "kana", "ふりがな"], ["", "birth_date", "生年月日"], ["FK", "class_id", "所属クラス"]]
+      },
+      scores: {
+        x: 200, y: 82, ja: "成績", attrs: [
+          ["PK", "score_id", "成績ID"], ["FK", "student_id", "学生"],
+          ["FK", "subject_id", "科目"], ["", "score", "点数"], ["", "exam_date", "試験日"]]
+      },
+    };
+
+    // [1側, 多側, 1側の端点, 多側の端点, ラベル]
+    const relations = [
+      ["teachers", "classes", [105, 26], [72, 26], "担任する"],
+      ["teachers", "subjects", [167, 26], [200, 26], "担当する"],
+      ["classes", "students", [41, 45], [41, 82], "所属する"],
+      ["subjects", "scores", [231, 45], [231, 82], "受験される"],
+      ["students", "scores", [72, 104], [200, 104], "受験する"],
+    ];
+
+    const NS = "http://www.w3.org/2000/svg";
+    function el(parent, tag, attrs, text) {
+      const e = document.createElementNS(NS, tag);
+      for (const k in attrs) e.setAttribute(k, attrs[k]);
+      if (text !== undefined) e.textContent = text;
+      parent.appendChild(e);
+      return e;
     }
-  }
 
-  // p: 端点（エンティティの辺の上）、u: 端点から線の内側へ向かう単位ベクトル
-  function endLabel(svg, p, u, text) {
-    const n = [-u[1], u[0]];
-    const vertical = Math.abs(u[1]) > 0.5;
-    const x = p[0] + u[0] * 4.5 + (vertical ? 2 : 0);
-    const y = p[1] + u[1] * 6 + (vertical ? 1.4 : -1.8);
-    el(svg, "text", { x, y, "font-size": 4.2, "font-weight": "bold", "font-family": "Consolas, monospace",
-                      "text-anchor": vertical ? "start" : (u[0] > 0 ? "start" : "end") }, text);
-  }
+    function drawEntities(svg, showFK, ents = entities) {
+      for (const [name, en] of Object.entries(ents)) {
+        const h = HEAD + ROW * en.attrs.length;
+        const sw = en.hl ? 0.9 : 0.5;
+        el(svg, "rect", { x: en.x, y: en.y, width: W, height: h, fill: en.hl ? "#fffbe6" : "#fff", stroke: "#111", "stroke-width": sw });
+        el(svg, "rect", { x: en.x, y: en.y, width: W, height: HEAD, fill: en.hl ? "#ffe58a" : "#e8e8e8", stroke: "#111", "stroke-width": sw });
+        el(svg, "text", { x: en.x + 3, y: en.y + 6.3, "font-size": 4.6, "font-weight": "bold" }, name);
+        el(svg, "text", { x: en.x + W - 3, y: en.y + 6.3, "font-size": 3.4, "text-anchor": "end", fill: "#444" }, en.ja);
+        en.attrs.forEach(([key, col, ja], i) => {
+          const y = en.y + HEAD + ROW * i;
+          if (i > 0) el(svg, "line", { x1: en.x, y1: y, x2: en.x + W, y2: y, stroke: "#bbb", "stroke-width": 0.25 });
+          const mark = key === "PK" || (key === "FK" && showFK) ? key : "";
+          el(svg, "text", { x: en.x + 2.5, y: y + 4.9, "font-size": 3.2, "font-weight": "bold" }, mark);
+          el(svg, "text", {
+            x: en.x + 10, y: y + 4.9, "font-size": 3.8, "font-family": "Consolas, monospace",
+            "text-decoration": key === "PK" ? "underline" : "none"
+          }, col);
+          el(svg, "text", { x: en.x + W - 2.5, y: y + 4.9, "font-size": 3.1, "text-anchor": "end", fill: "#555" }, ja);
+        });
+      }
+    }
 
-  function drawRelations(svg) {
-    for (const [, , a, b, label] of relations) {
-      const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
-      const u = [(b[0] - a[0]) / len, (b[1] - a[1]) / len];
-      el(svg, "line", { x1: a[0], y1: a[1], x2: b[0], y2: b[1], stroke: "#111", "stroke-width": 0.45 });
-      endLabel(svg, a, u, "1");
-      endLabel(svg, b, [-u[0], -u[1]], "0..*");
-      const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+    // p: 端点（エンティティの辺の上）、u: 端点から線の内側へ向かう単位ベクトル
+    function endLabel(svg, p, u, text) {
+      const n = [-u[1], u[0]];
       const vertical = Math.abs(u[1]) > 0.5;
-      el(svg, "text", { x: vertical ? mx - 3 : mx, y: vertical ? my + 1.3 : my + 5,
-                        "font-size": 3.2, "text-anchor": vertical ? "end" : "middle", fill: "#555" }, label);
+      const x = p[0] + u[0] * 4.5 + (vertical ? 2 : 0);
+      const y = p[1] + u[1] * 6 + (vertical ? 1.4 : -1.8);
+      el(svg, "text", {
+        x, y, "font-size": 4.2, "font-weight": "bold", "font-family": "Consolas, monospace",
+        "text-anchor": vertical ? "start" : (u[0] > 0 ? "start" : "end")
+      }, text);
     }
-  }
 
-  drawEntities(document.getElementById("sheet"), false);
-  const answer = document.getElementById("answer");
-  drawRelations(answer);
-  drawEntities(answer, true);
-</script>
+    function drawRelations(svg, rels = relations) {
+      for (const [, , a, b, label, hl] of rels) {
+        const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+        const u = [(b[0] - a[0]) / len, (b[1] - a[1]) / len];
+        if (hl) el(svg, "line", { x1: a[0], y1: a[1], x2: b[0], y2: b[1], stroke: "#ffd84d", "stroke-width": 2.4 });
+        el(svg, "line", { x1: a[0], y1: a[1], x2: b[0], y2: b[1], stroke: "#111", "stroke-width": hl ? 0.7 : 0.45 });
+        endLabel(svg, a, u, "1");
+        endLabel(svg, b, [-u[0], -u[1]], "0..*");
+        const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+        const vertical = Math.abs(u[1]) > 0.5;
+        el(svg, "text", {
+          x: vertical ? mx - 3 : mx, y: vertical ? my + 1.3 : my + 5,
+          "font-size": 3.2, "text-anchor": vertical ? "end" : "middle", fill: "#555"
+        }, label);
+      }
+    }
+
+    drawEntities(document.getElementById("sheet"), false);
+    const answer = document.getElementById("answer");
+    drawRelations(answer);
+    drawEntities(answer, true);
+
+    // 3ページ目：teachers と subjects が多対多のとき（viewBox 272 × 152）
+    const mnEntities = {
+      classes: { ...entities.classes, y: 6 },
+      teachers: { ...entities.teachers, y: 6 },
+      teacher_subjects: {
+        x: 200, y: 6, ja: "担当", hl: true, attrs: [
+          ["PK", "assignment_id", "担当ID"], ["FK", "teacher_id", "教員"], ["FK", "subject_id", "科目"]]
+      },
+      subjects: { ...entities.subjects, y: 54, attrs: entities.subjects.attrs.slice(0, 3) },
+      students: { ...entities.students, y: 104 },
+      scores: { ...entities.scores, y: 104 },
+    };
+    const mnRelations = [
+      ["teachers", "classes", [105, 24], [72, 24], "担任する"],
+      ["teachers", "teacher_subjects", [167, 20], [200, 20], "担当する", true],
+      ["subjects", "teacher_subjects", [231, 54], [231, 36], "担当される", true],
+      ["classes", "students", [41, 43], [41, 104], "所属する"],
+      ["subjects", "scores", [231, 84], [231, 104], "受験される"],
+      ["students", "scores", [72, 126], [200, 126], "受験する"],
+    ];
+    const mn = document.getElementById("mn");
+    drawRelations(mn, mnRelations);
+    drawEntities(mn, true, mnEntities);
+  </script>
 </body>
+
 </html>
