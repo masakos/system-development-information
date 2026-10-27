@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>成績通知書</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #e5e5e5;
+    color: #111;
+    font-family: "Yu Gothic", "YuGothic", "Meiryo", "Hiragino Sans", sans-serif;
+  }
+  .sheet {
+    width: 210mm;
+    height: 297mm;
+    margin: 10mm auto;
+    padding: 16mm 16mm;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 0.6mm solid #111;
+    padding-bottom: 2mm;
+  }
+  .head h1 { margin: 0; font-size: 20pt; letter-spacing: 0.2em; }
+  .head .sub { font-size: 11pt; margin-left: 5mm; color: #444; letter-spacing: 0; }
+  .head .school { font-size: 10pt; color: #444; }
+  h2 { font-size: 11pt; margin: 8mm 0 2mm; border-left: 1.2mm solid #111; padding-left: 2mm; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 0.3mm solid #111; padding: 2mm 3mm; font-size: 10.5pt; }
+  th { background: #eee; font-weight: bold; }
+  table.info { margin-top: 7mm; }
+  table.info th { width: 24mm; text-align: center; }
+  table.info .kana { display: block; font-size: 8pt; color: #444; }
+  table.info .nm { font-size: 14pt; font-weight: bold; letter-spacing: 0.1em; }
+  table.scores thead th { text-align: center; }
+  table.scores tbody td { height: 13mm; }
+  table.scores tfoot th { text-align: right; }
+  td.c { text-align: center; }
+  td.score { text-align: right; width: 24mm; font-size: 13pt; font-family: Consolas, "Courier New", monospace; }
+  .comment { border: 0.3mm solid #111; height: 40mm; }
+  .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; font-size: 10.5pt; }
+  .stamp span { display: inline-block; width: 14mm; height: 14mm; border: 0.3mm solid #999; border-radius: 50%; text-align: center; line-height: 14mm; color: #999; margin-left: 2mm; }
+  @media print {
+    body { background: none; }
+    .sheet { margin: 0; box-shadow: none; break-after: page; }
+    .sheet:last-child { break-after: auto; }
+    th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261001</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">あおきしょう</span><span class="nm">青木翔</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年5月12日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">66</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">73</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">79</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">79</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">66</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">363</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">72.6</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261002</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">いしかわあおい</span><span class="nm">石川葵</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年7月23日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">89</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">99</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">95</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">100</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">99</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">482</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">96.4</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261003</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">うえだりく</span><span class="nm">上田陸</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2008年2月15日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">70</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">73</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">69</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">62</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">55</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">329</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">65.8</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261004</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">えんどうみつき</span><span class="nm">遠藤美月</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年9月30日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">46</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">47</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">53</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">47</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">58</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">251</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">50.2</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261005</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">おおつかゆうま</span><span class="nm">大塚悠真</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年11月3日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">79</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">94</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">89</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">85</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">91</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">438</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">87.6</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261006</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">かとうひな</span><span class="nm">加藤陽菜</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年4月18日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">75</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">78</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">78</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">79</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">83</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">393</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">78.6</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261007</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">きくちれん</span><span class="nm">菊地蓮</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年6月25日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">42</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">50</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">42</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">57</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">57</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">248</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">49.6</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261008</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">くどうさくら</span><span class="nm">工藤さくら</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2008年1月9日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">95</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">95</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">100</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">90</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">100</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">480</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">96.0</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261009</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">こじまそうた</span><span class="nm">小島颯太</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年8月14日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">68</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">59</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">70</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">70</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">73</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">340</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">68.0</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261010</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">さかもとゆうか</span><span class="nm">坂本優花</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2008年3月27日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">62</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">51</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">61</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">67</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">4</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">241</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">60.2</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261011</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">しばたやまと</span><span class="nm">柴田大和</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年5月19日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">79</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">77</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">65</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">75</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">78</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">374</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">74.8</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261012</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">すぎやまあい</span><span class="nm">杉山愛</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年7月2日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">95</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">92</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">96</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">88</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">93</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">464</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">92.8</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261013</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">おおにしたくみ</span><span class="nm">大西拓海</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2004年10月11日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">75</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">72</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">73</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">73</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">57</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">350</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">70.0</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261014</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">ちばゆい</span><span class="nm">千葉結衣</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年12月5日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">61</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">50</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">47</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">44</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">59</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">261</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">52.2</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261015</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">なかのゆうと</span><span class="nm">中野悠斗</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2008年2月28日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">87</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">97</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">99</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">88</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">99</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">470</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">94.0</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261016</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">にしむらこはる</span><span class="nm">西村心春</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年6月8日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">78</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">74</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">85</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">86</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">88</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">411</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">82.2</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261017</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">のぐちみなと</span><span class="nm">野口湊</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年10月21日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">60</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">69</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">64</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">61</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">69</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">323</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">64.6</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261018</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">はしもとめい</span><span class="nm">橋本芽依</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年4月30日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">91</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">90</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">87</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">88</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">81</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">437</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">87.4</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261019</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">ふじたはやと</span><span class="nm">藤田隼人</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2008年1月17日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">45</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">44</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">36</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">37</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">40</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">202</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">40.4</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="head">
+    <h1>成績通知書<span class="sub">2026年度 前期</span></h1>
+    <div class="school">学生管理システム</div>
+  </div>
+
+  <table class="info">
+    <tr><th>学籍番号</th><td>261020</td><th>学科</th><td>ITエンジニア学科</td></tr>
+    <tr><th>氏名</th><td><span class="kana">まつだあやか</span><span class="nm">松田彩花</span></td><th>担任</th><td>佐藤美穂 先生</td></tr>
+    <tr><th>生年月日</th><td>2007年9月4日</td><th>入学年度</th><td>2026年度</td></tr>
+  </table>
+
+  <h2>科目別成績</h2>
+  <table class="scores">
+    <thead><tr><th>科目名</th><th>単位数</th><th>担当教員</th><th>試験日</th><th>点数</th></tr></thead>
+    <tbody>
+        <tr><td>プログラミング</td><td class="c">4</td><td>佐藤美穂</td><td class="c">2026-07-13</td><td class="score">82</td></tr>
+        <tr><td>データベース</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-14</td><td class="score">84</td></tr>
+        <tr><td>ネットワーク基礎</td><td class="c">3</td><td>森隆</td><td class="c">2026-07-15</td><td class="score">83</td></tr>
+        <tr><td>情報セキュリティ</td><td class="c">2</td><td>鈴木健一</td><td class="c">2026-07-16</td><td class="score">79</td></tr>
+        <tr><td>ビジネスマナー</td><td class="c">2</td><td>岡田恵</td><td class="c">2026-07-17</td><td class="score">74</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><th colspan="4">受験科目数</th><td class="score">5</td></tr>
+      <tr><th colspan="4">合計点</th><td class="score">402</td></tr>
+      <tr><th colspan="4">平均点</th><td class="score">80.4</td></tr>
+    </tfoot>
+  </table>
+
+  <h2>担任より</h2>
+  <div class="comment"></div>
+
+  <div class="foot">
+    <div>上記のとおり通知します。</div>
+    <div class="stamp">担任　佐藤美穂　<span>印</span></div>
+  </div>
+</section>
+</body>
+</html>
