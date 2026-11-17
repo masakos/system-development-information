@@ -5,7 +5,7 @@
 
 ## 1. アプリ全体の流れ（Main）
 
-`Main` を実行したときの処理の流れです。
+`Main` を実行したときの処理の流れです。(plantumlで記載)
 
 ```plantuml
 @startuml
