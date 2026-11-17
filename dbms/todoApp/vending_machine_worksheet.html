@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>自動販売機でUMLを描こう　ワークシート</title>
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #e5e5e5;
+    color: #111;
+    font-family: "Yu Gothic", "YuGothic", "Meiryo", "Hiragino Sans", sans-serif;
+    font-size: 10pt;
+    line-height: 1.5;
+  }
+  .sheet {
+    width: 210mm;
+    height: 297mm;
+    margin: 10mm auto;
+    padding: 10mm 12mm 8mm;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    display: flex;
+    flex-direction: column;
+    gap: 3mm;
+    overflow: hidden;
+    position: relative;
+  }
+  .head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 0.6mm solid #111;
+    padding-bottom: 1.5mm;
+  }
+  .head h1 { margin: 0; font-size: 15pt; white-space: nowrap; }
+  .head .sub { display: block; font-size: 10.5pt; color: #444; font-weight: bold; }
+  .name { font-size: 9.5pt; display: flex; gap: 4mm; align-items: flex-end; }
+  .name { white-space: nowrap; }
+  .name span { display: inline-block; border-bottom: 0.3mm solid #111; min-width: 18mm; }
+  .name span.teacher { display: none; }
+  .name span.wide { min-width: 38mm; }
+  .name span.sign { border: none; min-width: 0; }
+  body.answer .name span.sign { display: none; }
+  .page-no { position: absolute; bottom: 4mm; right: 12mm; font-size: 8pt; color: #888; }
+
+  h2 { font-size: 11.5pt; margin: 0 0 1mm; padding-left: 2mm; border-left: 1.2mm solid #111; }
+  h3 { font-size: 10pt; margin: 0 0 1mm; }
+  p { margin: 0 0 1mm; }
+  .lead { margin: 0; }
+  .cols { display: flex; gap: 5mm; }
+  .cols > .grow { flex: 1; }
+  .box { border: 0.3mm solid #111; border-radius: 1.5mm; padding: 2mm 3mm; }
+  .scenario { border: 0.5mm solid #111; border-radius: 1.5mm; padding: 1.5mm 3mm; font-weight: bold; background: #f3f3f3; }
+
+  table.std { border-collapse: collapse; width: 100%; }
+  table.std th, table.std td { border: 0.3mm solid #111; padding: 0.8mm 2mm; text-align: left; vertical-align: top; }
+  table.std th { background: #eee; white-space: nowrap; }
+
+  ol.steps { margin: 0; padding-left: 0; list-style: none; }
+  ol.steps li { margin-bottom: 2.2mm; font-size: 10.5pt; }
+  ol.steps .who { display: inline-block; min-width: 24mm; }
+
+  /* 書き込み欄 */
+  .blank {
+    display: inline-block;
+    min-width: 20mm;
+    border-bottom: 0.3mm solid #111;
+    text-align: center;
+    padding: 0 1mm;
+    margin: 0 0.5mm;
+  }
+  .blank.s { min-width: 10mm; }
+  .blank.l { min-width: 45mm; }
+  .a { color: transparent; }
+  .lines { margin-top: 1mm; }
+  .lines div { border-bottom: 0.3mm solid #111; height: 7mm; padding-left: 1mm; }
+
+  /* ことばカード */
+  .words { display: flex; flex-wrap: wrap; gap: 1.5mm; margin-top: 1mm; }
+  .words span {
+    border: 0.3mm solid #111;
+    border-radius: 1mm;
+    padding: 0.3mm 2mm;
+    background: #fff;
+    white-space: nowrap;
+  }
+  .words-box { border: 0.4mm solid #111; border-radius: 1.5mm; padding: 1.5mm 3mm 2mm; background: #f6f6f6; }
+  .words-box h3::before { content: "✂ "; }
+
+  /* ヒント */
+  .hints { border: 0.3mm dashed #666; border-radius: 1.5mm; padding: 1.5mm 3mm; }
+  .hints h3 { margin-bottom: 0.5mm; }
+  .hints ol { margin: 0; padding-left: 0; list-style: none; font-size: 9.5pt; }
+  .hints li { margin-bottom: 1mm; padding-left: 13mm; text-indent: -13mm; }
+  .hints .lv { display: inline-block; width: 12mm; text-indent: 0; font-weight: bold; font-size: 8.5pt;
+               border: 0.3mm solid #111; border-radius: 3mm; text-align: center; margin-right: 1mm; }
+  .hints .note { font-size: 8.5pt; color: #555; margin: 0 0 0.5mm; }
+
+  .legend { font-size: 9pt; }
+  .legend table { border-collapse: collapse; }
+  .legend td { padding: 0.3mm 1.5mm; vertical-align: middle; }
+  .legend svg { display: block; }
+
+  .connect { font-size: 9.5pt; background: #f6f6f6; border-radius: 1.5mm; padding: 1.5mm 3mm; }
+  .connect td { padding: 0 2mm 0 0; }
+
+  .teacher { display: none; }
+  .teacher-note { display: none; border: 0.5mm solid #d00; border-radius: 1.5mm; padding: 1.5mm 3mm; font-size: 9pt; }
+  .teacher-note h3 { color: #d00; }
+  .teacher-note ul { margin: 0; padding-left: 4mm; }
+  .teacher-note li { margin-bottom: 0.6mm; }
+
+  svg.diagram { display: block; }
+  code { font-family: Consolas, "Courier New", monospace; }
+
+  /* ===== 解答モード（body.answer） ===== */
+  body.answer .a { color: #d00; font-weight: bold; }
+  body.answer .student { display: none; }
+  body.answer .name span.teacher, body.answer .teacher { display: inline-block; color: #d00; font-weight: bold; border: 0.4mm solid #d00; border-radius: 1mm; padding: 0 2mm; font-size: 9.5pt; }
+  body.answer .teacher-note { display: block; }
+
+  @media print {
+    body { background: #fff; }
+    .sheet { margin: 0; box-shadow: none; break-after: page; }
+    .sheet:last-child { break-after: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= 1ページ目：はじめに・STEP 0 ================= -->
+<section class="sheet">
+  <div class="head">
+    <h1>自動販売機でUMLを描こう<span class="sub">STEP 0　観察しよう</span></h1>
+    <div class="name"><span class="teacher">解答（教員用）</span><span class="sign">番号 <span></span> 氏名 <span class="wide"></span></span></div>
+  </div>
+
+  <p class="lead">
+    いつも使っている <b>自動販売機</b> を、TODOアプリと同じように <b>3つの図</b> で表してみましょう。
+    図を描く前に、まずは「自動販売機で飲み物を買うとき、何が起きているか」を言葉にします。
+  </p>
+
+  <table class="std">
+    <tr><th>STEP</th><th>やること</th><th>描くもの</th></tr>
+    <tr><td>0</td><td>買うときの手順を言葉で書く</td><td>文章</td></tr>
+    <tr><td>1</td><td>手順を、順番・分かれ道・くり返しで表す</td><td>アクティビティ図</td></tr>
+    <tr><td>2</td><td>自動販売機を「部品」に分ける</td><td>クラス図</td></tr>
+    <tr><td>3</td><td>部品どうしの「頼みごと」の順番を表す</td><td>シーケンス図</td></tr>
+  </table>
+
+  <div class="scenario">今回の場面：自動販売機に 200円 を入れて、150円の お茶 を買う</div>
+
+  <div class="cols">
+    <div class="grow">
+      <h2>0-1　買うときの手順を完成させよう</h2>
+      <p>図の自動販売機を見ながら、<span class="blank s"></span> に言葉を入れましょう。</p>
+      <ol class="steps">
+        <li>① <span class="who">客が</span>自動販売機に お金を <span class="blank"><span class="a">入れる</span></span>。</li>
+        <li>② <span class="who">客が</span>お茶の <span class="blank"><span class="a">ボタン</span></span> を押す。</li>
+        <li>③ <span class="who">自動販売機が</span>お茶の <span class="blank"><span class="a">在庫</span></span> があるか（売り切れでないか）確かめる。</li>
+        <li>④ <span class="who">自動販売機が</span>入れたお金が、お茶の <span class="blank"><span class="a">値段</span></span> 以上か確かめる。</li>
+        <li>⑤ <span class="who">自動販売機が</span><span class="blank"><span class="a">お茶</span></span> を出す。</li>
+        <li>⑥ <span class="who">自動販売機が</span><span class="blank"><span class="a">おつり</span></span> を返す。</li>
+      </ol>
+    </div>
+    <svg class="diagram" id="machine" viewBox="0 0 70 82" style="width:56mm;height:66mm"></svg>
+  </div>
+
+  <div>
+    <h2>0-2　ボタンを押しても、お茶が出てこないのはどんなとき？</h2>
+    <p>思いつくだけ書こう（2つ以上）。
+      <span class="blank l"><span class="a">売り切れのとき</span></span>
+      <span class="blank l"><span class="a">お金が足りないとき</span></span>
+      <span class="blank l"><span class="a">（おつりが足りないとき）</span></span>
+    </p>
+  </div>
+
+  <div>
+    <h2>0-3　手順の文から「名詞」と「動詞」を見つけよう</h2>
+    <p>0-1 の文を読んで、<b>名詞（もの・データ）</b> と <b>動詞（すること）</b> に分けて書きましょう。全部見つからなくてもOK。</p>
+    <table class="std">
+      <tr><th style="width:50%">名詞（もの・データ）</th><th>動詞（すること）</th></tr>
+      <tr>
+        <td>例：お金
+          <span class="blank"><span class="a">客</span></span>
+          <span class="blank"><span class="a">自動販売機</span></span>
+          <span class="blank"><span class="a">お茶</span></span>
+          <span class="blank"><span class="a">ボタン</span></span>
+          <span class="blank"><span class="a">在庫</span></span>
+          <span class="blank"><span class="a">値段</span></span>
+          <span class="blank"><span class="a">おつり</span></span>
+        </td>
+        <td>例：入れる
+          <span class="blank"><span class="a">押す</span></span>
+          <span class="blank"><span class="a">確かめる</span></span>
+          <span class="blank"><span class="a">出す</span></span>
+          <span class="blank"><span class="a">返す</span></span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="hints student">
+    <h3>ヒント（手が止まったら、上から順に読もう）</h3>
+    <ol>
+      <li><span class="lv">ヒント1</span>0-1：自販機で実際に買うところを、頭の中で1コマずつ再生してみよう。</li>
+      <li><span class="lv">ヒント2</span>0-2：右の図の「水」を見てみよう。それから、100円しか入れなかったらどうなる？</li>
+      <li><span class="lv">ヒント3</span>0-3：名詞は「〇〇が」「〇〇を」の〇〇に入る言葉。動詞は文の最後の「〜る」「〜す」の言葉。</li>
+    </ol>
+  </div>
+
+  <div class="connect">
+    <b>この後のSTEPで使います</b>
+    <table>
+      <tr><td>0-1 の <b>手順の順番</b></td><td>→</td><td>STEP 1 アクティビティ図</td></tr>
+      <tr><td>0-2 の <b>うまくいかないとき</b></td><td>→</td><td>STEP 1 アクティビティ図の ◇（分かれ道）</td></tr>
+      <tr><td>0-3 の <b>名詞</b></td><td>→</td><td>STEP 2 クラス図の「クラス」と「属性」</td></tr>
+      <tr><td>0-3 の <b>動詞</b></td><td>→</td><td>STEP 2 クラス図の「メソッド」、STEP 3 シーケンス図の矢印</td></tr>
+    </table>
+  </div>
+
+  <div class="teacher-note">
+    <h3>教員メモ</h3>
+    <ul>
+      <li>ねらい：図を描く前に、手順を言葉にする。名詞と動詞を分けておくと、STEP 2・3 が楽になる。</li>
+      <li>0-1 は言い換えOK（「ボタン」→「商品のボタン」、「在庫」→「残り」など）。</li>
+      <li>0-3 で名詞と動詞の区別がつかない生徒には「『〜する』『〜る』を付けて言えるのが動詞」と声をかける。</li>
+    </ul>
+  </div>
+
+  <div class="page-no">1 / 4</div>
+</section>
+
+<!-- ================= 2ページ目：STEP 1 アクティビティ図 ================= -->
+<section class="sheet">
+  <div class="head">
+    <h1>自動販売機でUMLを描こう<span class="sub">STEP 1　アクティビティ図</span></h1>
+    <div class="name"><span class="teacher">解答（教員用）</span><span class="sign">番号 <span></span> 氏名 <span class="wide"></span></span></div>
+  </div>
+
+  <p class="lead">
+    アクティビティ図は、<b>処理の流れ（順番・分かれ道・くり返し）</b> を表す図です。
+    STEP 0 の手順を図にします。<b>①～⑥</b> に、下の「ことばカード」から選んで書き入れましょう。
+  </p>
+
+  <div class="cols">
+    <svg class="diagram" id="activity" viewBox="0 0 100 190" style="width:100mm;height:190mm"></svg>
+
+    <div class="grow" style="display:flex;flex-direction:column;gap:3mm">
+      <div class="words-box">
+        <h3>ことばカード（1回ずつ使う）</h3>
+        <div class="words">
+          <span>おつりを返す</span>
+          <span>売り切れ？</span>
+          <span>商品を出す</span>
+          <span>お金は足りる？</span>
+          <span>商品を選ぶ（ボタンを押す）</span>
+          <span>おつりはある？</span>
+        </div>
+      </div>
+
+      <div class="box legend">
+        <h3>記号の読み方</h3>
+        <table>
+          <tr><td><svg viewBox="0 0 10 8" style="width:8mm;height:6mm"><circle cx="5" cy="4" r="2.6" fill="#111"/></svg></td><td>開始</td></tr>
+          <tr><td><svg viewBox="0 0 10 8" style="width:8mm;height:6mm"><circle cx="5" cy="4" r="3" fill="#fff" stroke="#111" stroke-width="0.5"/><circle cx="5" cy="4" r="1.8" fill="#111"/></svg></td><td>終了</td></tr>
+          <tr><td><svg viewBox="0 0 10 8" style="width:8mm;height:6mm"><rect x="0.5" y="1.5" width="9" height="5" rx="1.8" fill="#fff" stroke="#111" stroke-width="0.5"/></svg></td><td>すること（〜する）</td></tr>
+          <tr><td><svg viewBox="0 0 10 8" style="width:8mm;height:6mm"><polygon points="5,0.5 9.5,4 5,7.5 0.5,4" fill="#fff" stroke="#111" stroke-width="0.5"/></svg></td><td>分かれ道（〜？）<br>「はい」「いいえ」で進む先が変わる</td></tr>
+          <tr><td></td><td>上に戻る矢印は <b>くり返し</b></td></tr>
+        </table>
+      </div>
+
+      <div class="hints student">
+        <h3>ヒント</h3>
+        <p class="note">手が止まったら、上から1つずつ読もう。</p>
+        <ol>
+          <li><span class="lv">ヒント1</span>STEP 0 の 0-1 の ①～⑥ と同じ順番で、上から並べよう。</li>
+          <li><span class="lv">ヒント2</span>◇（ひし形）には「？」で終わるカード、角の丸い四角には「〜する」のカードが入るよ。</li>
+          <li><span class="lv">ヒント3</span>② の「はい」の矢印は、① に戻っている。もう一度 <b>ボタンを押し直す</b> のはどんなとき？</li>
+          <li><span class="lv">最後</span>③ の「いいえ」は、<b>お金を入れる</b> に戻る。お金を足すのはどんなとき？</li>
+        </ol>
+      </div>
+
+      <div class="box">
+        <h3>問い</h3>
+        <p>図の中で <b>くり返し</b>（上に戻る矢印）になっているのは何か所？
+          <span class="blank s"><span class="a">2</span></span> か所</p>
+        <p>おつりがないとき（ちょうど150円を入れたとき）は、⑥ を通る？
+          <span class="blank"><span class="a">通らない</span></span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <h3>教員メモ</h3>
+    <ul>
+      <li>ねらい：「順番」「分かれ道（if）」「くり返し（for / while）」の3つで処理の流れが書けることに気づかせる。</li>
+      <li>② と ③ の順番は、「はい」「いいえ」の矢印の戻り先で決まる。売り切れなら <b>選び直し</b>（① へ）、お金が足りなければ <b>お金を足す</b>（「お金を入れる」へ）。</li>
+      <li>⑤ の後の小さな ◇ は「合流」。分かれた道がここで1本に戻ることを説明する。</li>
+      <li>早く終わった生徒には「0-2 で書いた『おつりが足りないとき』を図に描き足すと？」と問いかける。</li>
+    </ul>
+  </div>
+
+  <div class="page-no">2 / 4</div>
+</section>
+
+<!-- ================= 3ページ目：STEP 2 クラス図 ================= -->
+<section class="sheet">
+  <div class="head">
+    <h1>自動販売機でUMLを描こう<span class="sub">STEP 2　クラス図</span></h1>
+    <div class="name"><span class="teacher">解答（教員用）</span><span class="sign">番号 <span></span> 氏名 <span class="wide"></span></span></div>
+  </div>
+
+  <p class="lead">
+    クラス図は、システムを <b>部品（クラス）</b> に分けて、それぞれが <b>覚えておくデータ（属性）</b> と <b>できること（メソッド）</b> を表す図です。
+    自動販売機を「自動販売機」と「商品」の2つのクラスに分けます。点線の行に「ことばカード」から選んで書き入れましょう。
+  </p>
+
+  <svg class="diagram" id="class" viewBox="0 0 186 70" style="width:186mm;height:70mm"></svg>
+
+  <div class="cols">
+    <div class="grow" style="display:flex;flex-direction:column;gap:3mm">
+      <div class="words-box">
+        <h3>ことばカード（1回ずつ使う）</h3>
+        <div class="words">
+          <span>値段</span>
+          <span>商品を選ぶ()</span>
+          <span>在庫を減らす()</span>
+          <span>商品リスト</span>
+          <span>在庫数</span>
+          <span>おつりを返す()</span>
+          <span>売り切れか()</span>
+          <span>商品を出す()</span>
+          <span>値段を返す()</span>
+        </div>
+      </div>
+
+      <div class="box">
+        <h3>問い</h3>
+        <p>1. 線の両端の □ に、多重度を書こう。</p>
+        <p style="padding-left:4mm">自動販売機1台に、商品は何種類並んでいる？ → 商品の側に <span class="blank"><span class="a">0..*</span></span><br>
+           お茶のボタン1つは、何台の自動販売機に付いている？ → 自動販売機の側に <span class="blank"><span class="a">1</span></span></p>
+        <p>2. STEP 0 の名詞のうち、<b>クラス</b>になったものは？
+          <span class="blank l"><span class="a">自動販売機・お茶（商品）</span></span></p>
+        <p style="padding-left:4mm"><b>属性</b>になったものは？
+          <span class="blank l"><span class="a">お金（投入金額）・値段・在庫（在庫数）</span></span></p>
+      </div>
+    </div>
+
+    <div style="width:78mm;display:flex;flex-direction:column;gap:3mm">
+      <div class="box legend">
+        <h3>記号の読み方</h3>
+        <table>
+          <tr><td><b>上の段</b></td><td>クラス名</td></tr>
+          <tr><td><b>中の段</b></td><td>属性（覚えておくデータ）<br>先頭の <code>-</code> は「外から直接さわれない」</td></tr>
+          <tr><td><b>下の段</b></td><td>メソッド（できること）<br>先頭の <code>+</code> は「外から頼める」</td></tr>
+          <tr><td><b>1</b></td><td>ちょうど1つ</td></tr>
+          <tr><td><b>0..*</b></td><td>0こ以上（いくつでも）</td></tr>
+        </table>
+      </div>
+
+      <div class="hints student">
+        <h3>ヒント</h3>
+        <p class="note">手が止まったら、上から1つずつ読もう。</p>
+        <ol>
+          <li><span class="lv">ヒント1</span>「〇〇()」のように <b>( )</b> が付いたカードはメソッド（下の段）。付いていないカードは属性（中の段）。</li>
+          <li><span class="lv">ヒント2</span>迷ったら「それを知っているのはだれ？」と考えよう。お茶とコーラで <b>値段</b> は同じ？</li>
+          <li><span class="lv">ヒント3</span><b>在庫数</b> を持っているクラスが、「在庫を減らす()」「売り切れか()」も持つ。</li>
+          <li><span class="lv">最後</span>自動販売機には、<b>客が直接頼むこと</b>（選ぶ・出す・返す）が入る。</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <h3>教員メモ</h3>
+    <ul>
+      <li>ねらい：データと処理を「だれが持つか」で分ける。データ（在庫数）とそれを使う処理（在庫を減らす）は同じクラスに置く。</li>
+      <li>よくある間違い：値段・在庫数を自動販売機に入れる。→「値段を1つしか覚えられない自販機で、お茶とコーラを売れる？」と問いかける。</li>
+      <li>多重度は「1..*」（商品が1つもない自販機はない）も正解。理由が説明できればOK。</li>
+      <li>TODOアプリとの対応：自動販売機 ＝ TodoApp（全体を管理する）、商品 ＝ Task（1つ1つのデータ）。</li>
+    </ul>
+  </div>
+
+  <div class="page-no">3 / 4</div>
+</section>
+
+<!-- ================= 4ページ目：STEP 3 シーケンス図 ================= -->
+<section class="sheet">
+  <div class="head">
+    <h1>自動販売機でUMLを描こう<span class="sub">STEP 3　シーケンス図</span></h1>
+    <div class="name"><span class="teacher">解答（教員用）</span><span class="sign">番号 <span></span> 氏名 <span class="wide"></span></span></div>
+  </div>
+
+  <p class="lead">
+    シーケンス図は、<b>だれが、だれに、どの順番で頼みごとをするか</b> を表す図です。時間は <b>上から下へ</b> 進みます。
+    点線の □ に「ことばカード」から選んで書き入れましょう。
+  </p>
+
+  <svg class="diagram" id="sequence" viewBox="0 0 186 146" style="width:186mm;height:146mm"></svg>
+
+  <div class="cols">
+    <div class="grow" style="display:flex;flex-direction:column;gap:3mm">
+      <div class="words-box">
+        <h3>ことばカード（1回ずつ使う）</h3>
+        <div class="words">
+          <span>在庫を減らす()</span>
+          <span>商品を選ぶ(お茶)</span>
+          <span>おつりを返す()</span>
+          <span>売り切れか()</span>
+          <span>商品を出す()</span>
+          <span>値段を返す()</span>
+        </div>
+        <p class="note" style="font-size:8.5pt;margin-top:1mm">気づいた？ このカードは、STEP 2 のクラス図の <b>メソッド</b> と同じです。</p>
+      </div>
+
+      <div class="box">
+        <h3>問い</h3>
+        <p>4 で、お茶が「はい（売り切れ）」と返事をしたら、この後どうなる？ STEP 1 の図で確かめよう。</p>
+        <p><span class="blank l" style="min-width:110mm"><span class="a">5 から後は行われず、客が別の商品を選び直す（STEP 1 の ② →「はい」）</span></span></p>
+      </div>
+    </div>
+
+    <div style="width:80mm;display:flex;flex-direction:column;gap:3mm">
+      <div class="box legend">
+        <h3>記号の読み方</h3>
+        <table>
+          <tr><td><svg viewBox="0 0 16 4" style="width:12mm;height:3mm"><line x1="0" y1="2" x2="15" y2="2" stroke="#111" stroke-width="0.6"/><path d="M12,0.5 L15.5,2 L12,3.5 z" fill="#111"/></svg></td><td>頼む（メソッドを呼ぶ）</td></tr>
+          <tr><td><svg viewBox="0 0 16 4" style="width:12mm;height:3mm"><line x1="0" y1="2" x2="15" y2="2" stroke="#111" stroke-width="0.6" stroke-dasharray="1.5,1"/><path d="M12,0.5 L15.5,2 L12,3.5" fill="none" stroke="#111" stroke-width="0.6"/></svg></td><td>返事（戻り値）</td></tr>
+          <tr><td style="text-align:center">┆</td><td>ライフライン（時間の流れ）</td></tr>
+        </table>
+      </div>
+
+      <div class="hints student">
+        <h3>ヒント</h3>
+        <ol>
+          <li><span class="lv">ヒント1</span>矢印には、<b>矢印の先のクラス</b>のメソッドを書く。お茶への矢印には「商品」クラスのメソッドが入る。</li>
+          <li><span class="lv">ヒント2</span>4 と 6 の返事（点線）を見よう。「いいえ」「150円」は、何を聞かれた返事？</li>
+          <li><span class="lv">最後</span>8・9 の自分に戻る矢印は、自動販売機が自分のメソッドを使うところ。お茶を出してから、おつり。</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <h3>教員メモ</h3>
+    <ul>
+      <li>ねらい：シーケンス図の矢印 ＝ クラス図のメソッド。2つの図がつながっていることに気づかせる。</li>
+      <li>矢印の向きで迷う生徒には「頼む側 → 頼まれる側」。頼まれた側（矢印の先）がそのメソッドを持っている。</li>
+      <li>4・6・10 の点線は「返事（戻り値）」。Java の <code>return</code> にあたる。</li>
+      <li>アクティビティ図との違い：アクティビティ図は「何をするか」、シーケンス図は「だれがだれに頼むか」。</li>
+    </ul>
+  </div>
+
+  <div class="page-no">4 / 4</div>
+</section>
+
+<script>
+  const ANSWER = document.body.classList.contains("answer");
+  const NS = "http://www.w3.org/2000/svg";
+  const RED = "#d00", GRAY = "#888";
+
+  function el(parent, tag, attrs, text) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (text !== undefined) e.textContent = text;
+    parent.appendChild(e);
+    return e;
+  }
+
+  // 答えの文字：given なら黒で常に表示、そうでなければ解答モードのときだけ赤で表示
+  function answerText(svg, x, y, str, given, attrs = {}) {
+    if (!given && !ANSWER) return;
+    el(svg, "text", Object.assign({ x, y, "font-size": 3.4, "text-anchor": "middle",
+      fill: given ? "#111" : RED, "font-weight": given ? "normal" : "bold" }, attrs), str);
+  }
+
+  function markers(svg) {
+    const defs = el(svg, "defs", {});
+    const m1 = el(defs, "marker", { id: svg.id + "-fill", viewBox: "0 0 10 10", refX: 10, refY: 5,
+      markerWidth: 3, markerHeight: 3, markerUnits: "userSpaceOnUse", orient: "auto" });
+    el(m1, "path", { d: "M0,0 L10,5 L0,10 z", fill: "#111" });
+    const m2 = el(defs, "marker", { id: svg.id + "-open", viewBox: "0 0 10 10", refX: 10, refY: 5,
+      markerWidth: 3, markerHeight: 3, markerUnits: "userSpaceOnUse", orient: "auto" });
+    el(m2, "path", { d: "M0,0 L10,5 L0,10", fill: "none", stroke: "#111", "stroke-width": 1.5 });
+  }
+
+  function arrow(svg, pts, opts = {}) {
+    el(svg, "polyline", { points: pts.map(p => p.join(",")).join(" "), fill: "none", stroke: "#111",
+      "stroke-width": 0.45, "stroke-dasharray": opts.dashed ? "1.5,1" : "none",
+      "marker-end": `url(#${svg.id}-${opts.open ? "open" : "fill"})` });
+  }
+
+  function small(svg, x, y, str, attrs = {}) {
+    el(svg, "text", Object.assign({ x, y, "font-size": 3, fill: "#111" }, attrs), str);
+  }
+
+  // ---------- 自動販売機のイラスト ----------
+  (function drawMachine() {
+    const svg = document.getElementById("machine");
+    el(svg, "rect", { x: 1, y: 1, width: 68, height: 80, rx: 2, fill: "#fff", stroke: "#111", "stroke-width": 0.6 });
+    el(svg, "rect", { x: 4, y: 4, width: 44, height: 46, fill: "#f3f3f3", stroke: "#111", "stroke-width": 0.3 });
+    const drinks = [["お茶", "150円"], ["水", "120円"], ["コーラ", "160円"],
+                    ["紅茶", "150円"], ["ジュース", "130円"], ["コーヒー", "130円"]];
+    drinks.forEach(([name, price], i) => {
+      const cx = 11.5 + (i % 3) * 14.5, top = 7 + Math.floor(i / 3) * 22;
+      el(svg, "rect", { x: cx - 3, y: top + 2, width: 6, height: 9, rx: 1, fill: "#fff", stroke: "#111", "stroke-width": 0.3 });
+      el(svg, "rect", { x: cx - 1.5, y: top, width: 3, height: 2, fill: "#111" });
+      el(svg, "text", { x: cx, y: top + 14, "font-size": 2.5, "text-anchor": "middle" }, name);
+      el(svg, "text", { x: cx, y: top + 17, "font-size": 2.3, "text-anchor": "middle" }, price);
+      const soldOut = name === "水";
+      el(svg, "rect", { x: cx - 3.5, y: top + 18, width: 7, height: 2.6, rx: 0.6,
+        fill: soldOut ? "#111" : "#fff", stroke: "#111", "stroke-width": 0.3 });
+      if (soldOut) el(svg, "text", { x: cx, y: top + 20.1, "font-size": 1.9, "text-anchor": "middle", fill: "#fff" }, "売切");
+    });
+    // 右側のパネル
+    el(svg, "rect", { x: 51, y: 6, width: 15, height: 7, fill: "#fff", stroke: "#111", "stroke-width": 0.3 });
+    el(svg, "text", { x: 58.5, y: 11, "font-size": 3.6, "text-anchor": "middle", "font-family": "Consolas, monospace" }, "200");
+    el(svg, "text", { x: 58.5, y: 16.5, "font-size": 2.2, "text-anchor": "middle" }, "入れた金額");
+    el(svg, "rect", { x: 57.3, y: 20, width: 2.4, height: 8, rx: 0.8, fill: "#111" });
+    el(svg, "text", { x: 58.5, y: 32, "font-size": 2.2, "text-anchor": "middle" }, "お金を入れる");
+    el(svg, "circle", { cx: 58.5, cy: 39, r: 2.5, fill: "#fff", stroke: "#111", "stroke-width": 0.3 });
+    el(svg, "text", { x: 58.5, y: 45, "font-size": 2.2, "text-anchor": "middle" }, "おつりレバー");
+    // 取り出し口・おつり口
+    el(svg, "rect", { x: 6, y: 60, width: 40, height: 12, rx: 1, fill: "#e8e8e8", stroke: "#111", "stroke-width": 0.4 });
+    el(svg, "text", { x: 26, y: 67.5, "font-size": 2.8, "text-anchor": "middle" }, "取り出し口");
+    el(svg, "rect", { x: 52, y: 62, width: 13, height: 8, rx: 1, fill: "#e8e8e8", stroke: "#111", "stroke-width": 0.4 });
+    el(svg, "text", { x: 58.5, y: 67, "font-size": 2.4, "text-anchor": "middle" }, "おつり");
+  })();
+
+  // ---------- STEP 1：アクティビティ図 ----------
+  (function drawActivity() {
+    const svg = document.getElementById("activity");
+    markers(svg);
+    const cx = 50;
+
+    function action(y, w, label, given, no) {
+      el(svg, "rect", { x: cx - w / 2, y, width: w, height: 10, rx: 3.5, fill: "#fff", stroke: "#111", "stroke-width": 0.5 });
+      if (no) small(svg, cx - w / 2 + 1.5, y + 3.6, no, { "font-size": 3, fill: GRAY, "font-weight": "bold" });
+      answerText(svg, cx, y + 6.3, label, given);
+    }
+    function diamond(cy, hw, hh, label, given, no) {
+      el(svg, "polygon", { points: `${cx},${cy - hh} ${cx + hw},${cy} ${cx},${cy + hh} ${cx - hw},${cy}`,
+        fill: "#fff", stroke: "#111", "stroke-width": 0.5 });
+      if (no) small(svg, cx - hw + 2.5, cy + 1.1, no, { "font-size": 3, fill: GRAY, "font-weight": "bold" });
+      if (label) answerText(svg, cx, cy + 1.2, label, given);
+    }
+
+    // 開始
+    el(svg, "circle", { cx, cy: 6, r: 3, fill: "#111" });
+    arrow(svg, [[cx, 9], [cx, 16]]);
+    action(16, 50, "お金を入れる", true);
+    arrow(svg, [[cx, 26], [cx, 34]]);
+    action(34, 54, "商品を選ぶ（ボタンを押す）", false, "①");
+    arrow(svg, [[cx, 44], [cx, 52]]);
+    diamond(60, 18, 8, "売り切れ？", false, "②");
+    // ② はい → ① に戻る
+    arrow(svg, [[cx + 18, 60], [90, 60], [90, 39], [cx + 27, 39]]);
+    small(svg, cx + 20, 58.3, "はい");
+    small(svg, 93.5, 44, "選び直す", { "font-size": 2.6, fill: "#444", "writing-mode": "tb" });
+    // ② いいえ → ③
+    arrow(svg, [[cx, 68], [cx, 76]]);
+    small(svg, cx + 1.5, 73, "いいえ");
+    diamond(84, 18, 8, "お金は足りる？", false, "③");
+    // ③ いいえ → お金を入れる に戻る
+    arrow(svg, [[cx - 18, 84], [8, 84], [8, 21], [cx - 25, 21]]);
+    small(svg, cx - 20, 82.3, "いいえ", { "text-anchor": "end" });
+    small(svg, 4.5, 44, "お金を足す", { "font-size": 2.6, fill: "#444", "writing-mode": "tb" });
+    // ③ はい → ④
+    arrow(svg, [[cx, 92], [cx, 100]]);
+    small(svg, cx + 1.5, 97, "はい");
+    action(100, 50, "商品を出す", false, "④");
+    arrow(svg, [[cx, 110], [cx, 118]]);
+    diamond(126, 18, 8, "おつりはある？", false, "⑤");
+    // ⑤ はい → ⑥
+    arrow(svg, [[cx, 134], [cx, 142]]);
+    small(svg, cx + 1.5, 139, "はい");
+    action(142, 50, "おつりを返す", false, "⑥");
+    arrow(svg, [[cx, 152], [cx, 160]]);
+    // ⑤ いいえ → 合流
+    arrow(svg, [[cx + 18, 126], [90, 126], [90, 166], [cx + 6, 166]]);
+    small(svg, cx + 20, 124.3, "いいえ");
+    diamond(166, 6, 6, "", true);
+    small(svg, cx - 7.5, 167, "合流", { "font-size": 2.6, fill: "#444", "text-anchor": "end" });
+    arrow(svg, [[cx, 172], [cx, 179]]);
+    // 終了
+    el(svg, "circle", { cx, cy: 183.5, r: 4, fill: "#fff", stroke: "#111", "stroke-width": 0.6 });
+    el(svg, "circle", { cx, cy: 183.5, r: 2.4, fill: "#111" });
+  })();
+
+  // ---------- STEP 2：クラス図 ----------
+  (function drawClass() {
+    const svg = document.getElementById("class");
+    const W = 72, NAME = 10, ROW = 7;
+
+    function classBox(x, y, name, attrs, methods) {
+      const attrH = attrs.length * ROW + 2, methH = methods.length * ROW + 2;
+      const h = NAME + attrH + methH;
+      el(svg, "rect", { x, y, width: W, height: h, fill: "#fff", stroke: "#111", "stroke-width": 0.5 });
+      el(svg, "rect", { x, y, width: W, height: NAME, fill: "#e8e8e8", stroke: "#111", "stroke-width": 0.5 });
+      el(svg, "text", { x: x + W / 2, y: y + 6.8, "font-size": 4.4, "font-weight": "bold", "text-anchor": "middle" }, name);
+      el(svg, "line", { x1: x, y1: y + NAME + attrH, x2: x + W, y2: y + NAME + attrH, stroke: "#111", "stroke-width": 0.5 });
+      const rows = [
+        ...attrs.map((a, i) => ["-", a, y + NAME + 1 + ROW * i]),
+        ...methods.map((m, i) => ["+", m, y + NAME + attrH + 1 + ROW * i]),
+      ];
+      for (const [mark, [label, given], ry] of rows) {
+        el(svg, "text", { x: x + 3, y: ry + 5, "font-size": 3.8, "font-family": "Consolas, monospace" }, mark);
+        if (!given && !ANSWER) {
+          el(svg, "line", { x1: x + 8, y1: ry + 6, x2: x + W - 4, y2: ry + 6, stroke: GRAY, "stroke-width": 0.3, "stroke-dasharray": "1,1" });
+        }
+        answerText(svg, x + 8, ry + 5, label, given, { "text-anchor": "start", "font-size": 3.6 });
+      }
+      return h;
+    }
+
+    classBox(8, 4, "自動販売機",
+      [["投入金額", true], ["商品リスト", false]],
+      [["お金を入れる()", true], ["商品を選ぶ()", false], ["商品を出す()", false], ["おつりを返す()", false]]);
+    classBox(106, 4, "商品",
+      [["名前", true], ["値段", false], ["在庫数", false]],
+      [["売り切れか()", false], ["値段を返す()", false], ["在庫を減らす()", false]]);
+
+    // 関連の線と多重度
+    const y = 34;
+    el(svg, "line", { x1: 80, y1: y, x2: 106, y2: y, stroke: "#111", "stroke-width": 0.5 });
+    el(svg, "text", { x: 93, y: y - 2, "font-size": 3.2, "text-anchor": "middle", fill: "#444" }, "売る");
+    for (const [bx, ans] of [[81, "1"], [95, "0..*"]]) {
+      if (!ANSWER) el(svg, "rect", { x: bx, y: y + 1.5, width: 10, height: 6.5, fill: "none", stroke: GRAY, "stroke-width": 0.3, "stroke-dasharray": "1,1" });
+      answerText(svg, bx + 5, y + 6.2, ans, false, { "font-size": 3.8, "font-family": "Consolas, monospace" });
+    }
+  })();
+
+  // ---------- STEP 3：シーケンス図 ----------
+  (function drawSequence() {
+    const svg = document.getElementById("sequence");
+    markers(svg);
+    const X = { cust: 26, vm: 96, tea: 158 };
+    const END = 144;
+
+    // 客（人の形）
+    el(svg, "circle", { cx: X.cust, cy: 4.5, r: 2.5, fill: "#fff", stroke: "#111", "stroke-width": 0.5 });
+    el(svg, "line", { x1: X.cust, y1: 7, x2: X.cust, y2: 12.5, stroke: "#111", "stroke-width": 0.5 });
+    el(svg, "line", { x1: X.cust - 3.5, y1: 9, x2: X.cust + 3.5, y2: 9, stroke: "#111", "stroke-width": 0.5 });
+    el(svg, "polyline", { points: `${X.cust - 3},16 ${X.cust},12.5 ${X.cust + 3},16`, fill: "none", stroke: "#111", "stroke-width": 0.5 });
+    el(svg, "text", { x: X.cust, y: 20, "font-size": 3.6, "text-anchor": "middle", "font-weight": "bold" }, "客");
+    // 自動販売機・お茶
+    for (const [x, label] of [[X.vm, "自動販売機"], [X.tea, "お茶 : 商品"]]) {
+      el(svg, "rect", { x: x - 17, y: 6, width: 34, height: 11, fill: "#e8e8e8", stroke: "#111", "stroke-width": 0.5 });
+      el(svg, "text", { x, y: 13, "font-size": 3.8, "text-anchor": "middle", "font-weight": "bold" }, label);
+    }
+    // ライフライン
+    for (const [x, top] of [[X.cust, 22], [X.vm, 17], [X.tea, 17]]) {
+      el(svg, "line", { x1: x, y1: top, x2: x, y2: END, stroke: "#555", "stroke-width": 0.35, "stroke-dasharray": "2,1.5" });
+    }
+
+    // メッセージ：[番号, from, to(または "self"), y, 名前, given, 返事か]
+    const msgs = [
+      [1, "cust", "vm", 30, "お金を入れる(200円)", true, false],
+      [2, "cust", "vm", 42, "商品を選ぶ(お茶)", false, false],
+      [3, "vm", "tea", 54, "売り切れか()", false, false],
+      [4, "tea", "vm", 64, "いいえ（false）", true, true],
+      [5, "vm", "tea", 76, "値段を返す()", false, false],
+      [6, "tea", "vm", 86, "150円", true, true],
+      [7, "vm", "tea", 98, "在庫を減らす()", false, false],
+      [8, "vm", "self", 108, "商品を出す()", false, false],
+      [9, "vm", "self", 121, "おつりを返す()", false, false],
+      [10, "vm", "cust", 138, "お茶 と おつり50円", true, true],
+    ];
+
+    for (const [no, from, to, y, label, given, ret] of msgs) {
+      let area; // 文字を書く場所 [x, y, 幅]
+      if (to === "self") {
+        const x = X[from];
+        arrow(svg, [[x, y], [x + 12, y], [x + 12, y + 6], [x + 0.6, y + 6]]);
+        area = [x + 18, y - 1, 40];
+      } else {
+        const x1 = X[from], x2 = X[to];
+        arrow(svg, [[x1, y], [x2 + (x2 > x1 ? -0.6 : 0.6), y]], { dashed: ret, open: ret });
+        const mid = (x1 + x2) / 2;
+        area = [mid - 22, y - 8, 44];
+      }
+      const [ax, ay, aw] = area;
+      if (!given && !ANSWER) {
+        el(svg, "rect", { x: ax, y: ay, width: aw, height: 6.8, fill: "none", stroke: GRAY, "stroke-width": 0.3, "stroke-dasharray": "1,1" });
+      }
+      el(svg, "text", { x: ax - 1, y: ay + 5, "font-size": 3.2, "text-anchor": "end", "font-weight": "bold" }, no);
+      answerText(svg, ax + aw / 2, ay + 5, label, given, { "font-size": 3.5 });
+    }
+  })();
+</script>
+</body>
+</html>
