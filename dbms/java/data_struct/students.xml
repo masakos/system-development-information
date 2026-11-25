@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students>
+    <student>
+        <id>1</id>
+        <name>田中</name>
+        <age>20</age>
+    </student>
+    <student>
+        <id>2</id>
+        <name>佐藤</name>
+        <age>19</age>
+    </student>
+</students>
