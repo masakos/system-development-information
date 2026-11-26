@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>テスト 確認問題</title>
+<style>
+  @page { size: A4; margin: 10mm 11mm; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.5;
+    color: #000;
+    background: #fff;
+  }
+  .page { width: 188mm; margin: 0 auto; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1.5px solid #000; padding-bottom: 1.5mm; margin-bottom: 3mm; }
+  h1 { font-size: 14pt; margin: 0; }
+  .name { font-size: 9pt; }
+  .name span { display: inline-block; border-bottom: 0.8px solid #000; width: 12mm; margin-right: 2mm; }
+  .name span.long { width: 40mm; }
+  .q { break-inside: avoid; margin-bottom: 3mm; }
+  .q h2 { font-size: 10.5pt; margin: 0 0 1mm; border-left: 3px solid #000; padding-left: 2mm; }
+  .q p { margin: 0 0 1mm; }
+  .note { font-size: 8.5pt; }
+  table { border-collapse: collapse; margin: 1mm 0 1.5mm; }
+  th, td { border: 0.6px solid #000; padding: 0.8mm 2.5mm; text-align: center; }
+  th { background: #eee; font-weight: normal; }
+  td.l { text-align: left; }
+  pre { margin: 1mm 0 1.5mm; padding: 1.5mm 2.5mm; border: 0.6px solid #000; font-family: Consolas, "Courier New", monospace; font-size: 8.5pt; line-height: 1.75; white-space: pre-wrap; }
+  .bl {
+    display: inline-block; position: relative; vertical-align: middle;
+    min-width: 18mm; height: 5.5mm; border: 0.8px solid #000; background: #fff;
+  }
+  .bl.w { min-width: 34mm; }
+  .bl::before { content: attr(data-n); position: absolute; left: 0.6mm; top: -0.4mm; font-size: 7pt; line-height: 1; }
+  .spec td, .spec th { text-align: left; }
+  pre.tight { line-height: 1.3; }
+  .q.last { break-inside: auto; }
+  @media screen {
+    body { background: #ddd; }
+    .page { background: #fff; padding: 10mm 11mm; width: 210mm; min-height: 297mm; margin: 5mm auto; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <h1>テスト 確認問題</h1>
+  <div class="name">組<span></span>番<span></span>名前<span class="long"></span></div>
+</header>
+
+<section class="q">
+  <h2>テストするプログラム（Purchase.java）</h2>
+  <table class="spec">
+    <tr><th>小計</th><td>単価 × 数量</td></tr>
+    <tr><th>割引</th><td><b>会員</b> かつ 小計が<b>5000円以上</b> なら 500円、それ以外は 0円</td></tr>
+    <tr><th>支払金額</th><td>小計 − 割引</td></tr>
+  </table>
+<pre class="tight">public class Purchase {
+    static int subtotal(int price, int quantity) {   // 小計
+        return price * quantity;
+    }
+    static int discount(int subtotal, boolean member) {   // 割引
+        int d = 0;
+        if (subtotal >= 5000 &amp;&amp; member) {
+            d = 500;
+        }
+        return d;
+    }
+    static int pay(int price, int quantity, boolean member) {   // 支払金額
+        int sub = subtotal(price, quantity);
+        return sub - discount(sub, member);
+    }
+}</pre>
+</section>
+
+<section class="q">
+  <h2>問題1　テストの種類</h2>
+  <table>
+    <tr><th>開発の工程</th><th></th><th>対応するテスト</th><th>何を確かめる？</th></tr>
+    <tr><td>要件定義</td><td>↔</td><td><span class="bl" data-n="①"></span> テスト</td><td class="l">利用者が業務で使えるか</td></tr>
+    <tr><td>システム要件定義・設計</td><td>↔</td><td><span class="bl" data-n="②"></span> テスト</td><td class="l">システム全体が要件どおりか</td></tr>
+    <tr><td>ソフトウエア要件定義・設計</td><td>↔</td><td><span class="bl" data-n="③"></span> テスト</td><td class="l">モジュール<b>同士</b>をつないで動くか</td></tr>
+    <tr><td>プログラミング</td><td>↔</td><td><span class="bl" data-n="④"></span> テスト</td><td class="l">モジュール<b>1つ</b>が正しく動くか</td></tr>
+  </table>
+  <p>修正したあと、今まで動いていた部分がこわれていないか確かめるテスト → <span class="bl" data-n="⑤"></span> テスト</p>
+</section>
+
+<section class="q">
+  <h2>問題2　assert の使い方</h2>
+  <p class="note"><code>assert 条件 : "メッセージ";</code>　条件が true なら合格（何も起きない）、false なら不合格。</p>
+<pre>assert Purchase.subtotal(100, 3) == <span class="bl" data-n="①"></span> : "100円×3個";</pre>
+  <p>assert を有効にして実行するコマンド：　<code>java</code> <span class="bl" data-n="②"></span> <code>PurchaseTest</code></p>
+  <p>条件が false のとき発生して、プログラムが止まるエラー：　<span class="bl w" data-n="③"></span></p>
+</section>
+
+<section class="q">
+  <h2>問題3　同値分割（ブラックボックステスト）</h2>
+  <p class="note">同じ結果になる入力をグループに分け、各グループから<b>代表を1つ</b>選ぶ。</p>
+  <table>
+    <tr><th>グループ</th><th>小計</th><th>会員</th><th>期待値（割引）</th></tr>
+    <tr><td>会員・5000円以上</td><td>8000</td><td>true</td><td><span class="bl" data-n="①"></span></td></tr>
+    <tr><td>会員・5000円未満</td><td><span class="bl" data-n="②"></span></td><td>true</td><td><span class="bl" data-n="③"></span></td></tr>
+    <tr><td>非会員</td><td>8000</td><td><span class="bl" data-n="④"></span></td><td><span class="bl" data-n="⑤"></span></td></tr>
+  </table>
+<pre>assert Purchase.discount(8000, true)  == <span class="bl" data-n="①"></span> : "会員・5000円以上";
+assert Purchase.discount(<span class="bl" data-n="②"></span>, true)  == <span class="bl" data-n="③"></span> : "会員・5000円未満";
+assert Purchase.discount(8000, <span class="bl" data-n="④"></span>) == <span class="bl" data-n="⑤"></span> : "非会員";</pre>
+</section>
+
+<section class="q">
+  <h2>問題4　境界値分析（ブラックボックステスト）</h2>
+  <p class="note">バグは<b>さかいめ</b>に多い。さかいめの<b>両側</b>の値をテストする。（会員の場合）</p>
+<pre>      割引 0円       |      割引 500円
+  ... 4998  <span class="bl" data-n="①"></span> | <span class="bl" data-n="②"></span>  5001 ...</pre>
+<pre>assert Purchase.discount(<span class="bl" data-n="①"></span>, true) == 0   : "境界（0円側）";
+assert Purchase.discount(<span class="bl" data-n="②"></span>, true) == 500 : "境界（500円側）";</pre>
+  <p>プログラムの if を、まちがえて <code>subtotal <b>&gt;</b> 5000</code> と書いてしまった。<br>
+  問題3・問題4 のテストのうち、不合格になるのは 小計 <span class="bl" data-n="③"></span> 円 のテスト。</p>
+</section>
+
+<section class="q">
+  <h2>問題5　ホワイトボックステスト</h2>
+  <p class="note">プログラムの<b>中身</b>（discount の if）を見てテストケースを作る。</p>
+  <table>
+    <tr><th>網羅の種類</th><th>意味</th></tr>
+    <tr><td>命令網羅</td><td class="l">すべての<b>命令（行）</b>を最低1回は実行する</td></tr>
+    <tr><td>判定条件網羅（分岐網羅）</td><td class="l">if の結果が<b>真・偽の両方</b>になるようにする</td></tr>
+    <tr><td>条件網羅</td><td class="l"><code>&amp;&amp;</code> の<b>1つ1つの条件</b>が真・偽の両方になるようにする</td></tr>
+  </table>
+  <table>
+    <tr><th>網羅</th><th>if の結果</th><th>subtotal &gt;= 5000</th><th>member</th><th>小計</th><th>会員</th></tr>
+    <tr><td>命令網羅（1件）</td><td>真</td><td>真</td><td>真</td><td><span class="bl" data-n="①"></span></td><td><span class="bl" data-n="②"></span></td></tr>
+    <tr><td rowspan="2">分岐網羅（2件）</td><td>真</td><td>真</td><td>真</td><td><span class="bl" data-n="③"></span></td><td><span class="bl" data-n="④"></span></td></tr>
+    <tr><td>偽</td><td>偽</td><td>偽</td><td><span class="bl" data-n="⑤"></span></td><td><span class="bl" data-n="⑥"></span></td></tr>
+    <tr><td rowspan="2">条件網羅（2件）</td><td><span class="bl" data-n="⑦"></span></td><td>真</td><td>偽</td><td><span class="bl" data-n="⑧"></span></td><td>false</td></tr>
+    <tr><td><span class="bl" data-n="⑨"></span></td><td>偽</td><td>真</td><td>3000</td><td><span class="bl" data-n="⑩"></span></td></tr>
+  </table>
+  <p>条件網羅の2件で、<code>d = 500;</code> の行は実行されるか？　<span class="bl w" data-n="⑪"></span></p>
+</section>
+
+<section class="q">
+  <h2>問題6　スタブとドライバ</h2>
+  <p class="note">割引の計算（discount）が<b>まだ完成していない</b>。それでも 支払金額（pay）をテストしたい。</p>
+<pre>// <span class="bl w" data-n="①"></span>：未完成の割引計算の代わり。いつも 500 を返すだけ
+static int discountStub(int subtotal, boolean member) {
+    return <span class="bl" data-n="②"></span>;
+}
+
+static int pay(int price, int quantity, boolean member) {   // テスト対象
+    int sub = price * quantity;
+    return sub - discountStub(sub, member);
+}
+
+// <span class="bl w" data-n="③"></span>：テスト対象を呼び出して結果を確かめる
+public static void main(String[] args) {
+    assert pay(1000, 3, true) == <span class="bl" data-n="④"></span> : "1000円×3個";
+}</pre>
+  <p>上位のモジュールから順につなぐ方法（スタブを使う）：　<span class="bl w" data-n="⑤"></span> テスト<br>
+  下位のモジュールから順につなぐ方法（ドライバを使う）：　<span class="bl w" data-n="⑥"></span> テスト</p>
+</section>
+
+</div>
+</body>
+</html>
